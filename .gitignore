@@ -1,0 +1,16 @@
+# .NET build output
+bin/
+obj/
+
+# Secret files — never commit
+appsettings.Development.json
+appsettings.Production.json
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# OS
+.DS_Store
+Thumbs.db

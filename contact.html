@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — Bhanudaya Secondary School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<style>
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --ink:      #0f1923;
+  --ink-soft: #4a5568;
+  --ink-mute: #94a3b8;
+  --gold:     #c9a84c;
+  --gold-lt:  #f0d98a;
+  --surface:  #faf9f7;
+  --white:    #ffffff;
+  --border:   #e8e4dc;
+  --danger:   #dc2626;
+  --success:  #16a34a;
+  --radius:   12px;
+  --shadow:   0 4px 24px rgba(15,25,35,0.08);
+  --shadow-lg:0 12px 48px rgba(15,25,35,0.14);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--surface);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── Navbar ──────────────────────────────────────────────── */
+.navbar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--ink);
+  padding: 0 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+.navbar-brand {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.navbar-brand img { width: 36px; height: 36px; object-fit: contain; }
+.navbar-brand span {
+  font-family: 'Playfair Display', serif;
+  color: var(--white); font-size: 16px; font-weight: 600;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: rgba(255,255,255,0.7); text-decoration: none;
+  padding: 8px 14px; border-radius: 8px;
+  font-size: 14px; font-weight: 500;
+  transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--white); background: rgba(255,255,255,0.1);
+}
+
+/* ── Hero Banner ─────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--ink) 0%, #1a2f45 60%, #1e3a5f 100%);
+  padding: 64px 48px 56px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.15), transparent 70%);
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -40px; left: 10%;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.08), transparent 70%);
+}
+.hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+.hero-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold-lt); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 20px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  color: var(--white); font-size: clamp(32px, 5vw, 52px);
+  line-height: 1.15; margin-bottom: 16px;
+}
+.hero h1 span { color: var(--gold); }
+.hero p {
+  color: rgba(255,255,255,0.65); font-size: 16px;
+  max-width: 480px; line-height: 1.7;
+}
+
+/* ── Main Layout ─────────────────────────────────────────── */
+.main { max-width: 1100px; margin: 0 auto; padding: 56px 48px; }
+.grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; }
+
+/* ── Section Titles ──────────────────────────────────────── */
+.section-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; color: var(--ink); margin-bottom: 24px;
+  line-height: 1.3;
+}
+
+/* ── Contact Info Cards ───────────────────────────────────── */
+.info-card {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+  margin-bottom: 16px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.info-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+.info-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--ink), #1e3a5f);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.info-icon i { color: var(--gold); font-size: 16px; }
+.info-content h4 { font-size: 13px; font-weight: 700; color: var(--ink-soft); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+.info-content p, .info-content a { font-size: 15px; color: var(--ink); text-decoration: none; font-weight: 500; }
+.info-content a:hover { color: var(--gold); }
+
+.social-row { display: flex; gap: 10px; margin-top: 20px; }
+.social-btn {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--ink); color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; font-size: 15px;
+  transition: all 0.2s;
+}
+.social-btn:hover { background: var(--gold); transform: translateY(-2px); }
+
+/* ── Comment Section ─────────────────────────────────────── */
+.comment-section {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.comment-header {
+  padding: 28px 28px 0;
+}
+
+/* ── Login Gate ──────────────────────────────────────────── */
+.login-gate {
+  margin: 20px 28px 24px;
+  background: linear-gradient(135deg, #f8f6f0, #faf9f7);
+  border: 1px dashed var(--border);
+  border-radius: 12px; padding: 28px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.login-gate.hidden { display: none; }
+.login-gate-icon { font-size: 32px; margin-bottom: 12px; }
+.login-gate h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; color: var(--ink); }
+.login-gate p { font-size: 14px; color: var(--ink-soft); margin-bottom: 20px; line-height: 1.5; }
+.login-gate-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 22px; background: var(--ink); color: var(--white);
+  border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-primary:hover { background: #1e3a5f; transform: translateY(-1px); }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 22px; background: transparent; color: var(--ink);
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none;
+  transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+}
+.btn-outline:hover { border-color: var(--ink); background: var(--ink); color: var(--white); }
+
+/* ── Logged-in composer ──────────────────────────────────── */
+.composer { margin: 20px 28px 24px; }
+.composer.hidden { display: none; }
+.composer-user {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 14px;
+}
+.composer-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), #a07830);
+  color: var(--white); font-weight: 700; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.composer-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+.composer-email { font-size: 12px; color: var(--ink-mute); }
+.composer-logout {
+  margin-left: auto; font-size: 12px; color: var(--ink-mute);
+  background: none; border: none; cursor: pointer;
+  text-decoration: underline; font-family: 'DM Sans', sans-serif;
+}
+.composer-logout:hover { color: var(--danger); }
+
+.composer-textarea {
+  width: 100%; padding: 14px 16px;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  font-size: 14px; font-family: 'DM Sans', sans-serif;
+  color: var(--ink); background: var(--surface);
+  resize: none; height: 100px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.composer-textarea:focus {
+  border-color: var(--ink); 
+  box-shadow: 0 0 0 3px rgba(15,25,35,0.06);
+}
+.composer-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.char-count { font-size: 12px; color: var(--ink-mute); }
+.btn-post {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 22px; background: var(--gold); color: var(--ink);
+  border: none; border-radius: 8px; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-post:hover { background: #b8933e; transform: translateY(-1px); }
+.btn-post:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── Divider ─────────────────────────────────────────────── */
+.divider {
+  height: 1px; background: var(--border);
+  margin: 0 28px;
+}
+
+/* ── Comments List ───────────────────────────────────────── */
+.comments-list { padding: 20px 28px 28px; }
+.comments-count {
+  font-size: 13px; font-weight: 700; color: var(--ink-soft);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+
+.comment-item {
+  display: flex; gap: 12px; margin-bottom: 20px;
+  animation: fadeUp 0.4s ease forwards;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.comment-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #1e3a5f, #2563eb);
+  color: var(--white); font-weight: 700; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.comment-avatar img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+.comment-bubble {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 0 12px 12px 12px;
+  padding: 12px 16px; flex: 1;
+}
+.comment-meta {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+}
+.comment-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.comment-time { font-size: 12px; color: var(--ink-mute); }
+.comment-text { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+
+.no-comments {
+  text-align: center; padding: 32px 0;
+  color: var(--ink-mute); font-size: 14px;
+}
+.no-comments i { font-size: 32px; display: block; margin-bottom: 10px; opacity: 0.4; }
+
+/* ── Login Modal ─────────────────────────────────────────── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(15,25,35,0.6); backdrop-filter: blur(4px);
+  z-index: 1000; align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--white); border-radius: 20px;
+  width: 90%; max-width: 420px;
+  box-shadow: var(--shadow-lg);
+  animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  overflow: hidden;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-header {
+  background: var(--ink); padding: 24px 28px;
+  position: relative;
+}
+.modal-header h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--white); font-size: 22px; margin-bottom: 4px;
+}
+.modal-header p { color: rgba(255,255,255,0.6); font-size: 13px; }
+.modal-close {
+  position: absolute; top: 18px; right: 20px;
+  background: rgba(255,255,255,0.1); border: none;
+  color: var(--white); width: 32px; height: 32px;
+  border-radius: 8px; cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.2); }
+
+.modal-body { padding: 28px; }
+.modal-tabs {
+  display: flex; background: var(--surface); border-radius: 10px;
+  padding: 4px; margin-bottom: 24px; gap: 4px;
+}
+.tab-btn {
+  flex: 1; padding: 9px; border: none; border-radius: 8px;
+  background: transparent; color: var(--ink-soft);
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+}
+.tab-btn.active { background: var(--white); color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 12px; font-weight: 700; color: var(--ink-soft); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+.field input {
+  width: 100%; padding: 11px 14px;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-size: 14px; font-family: 'DM Sans', sans-serif;
+  color: var(--ink); background: var(--surface); outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field input:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(15,25,35,0.06);
+}
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.btn-submit {
+  width: 100%; padding: 13px;
+  background: var(--ink); color: var(--white);
+  border: none; border-radius: 10px;
+  font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 16px;
+}
+.btn-submit:hover { background: #1e3a5f; }
+
+.or-divider {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--ink-mute); font-size: 12px; margin-bottom: 16px;
+}
+.or-divider::before, .or-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+.msg-box {
+  padding: 10px 14px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; margin-bottom: 14px;
+  display: none;
+}
+.msg-box.error   { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; display: block; }
+.msg-box.success { background: #f0fdf4; color: var(--success); border: 1px solid #bbf7d0; display: block; }
+
+/* Google button wrapper */
+.g_id_signin { display: flex; justify-content: center; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .navbar { padding: 0 20px; }
+  .hero { padding: 40px 20px; }
+  .main { padding: 32px 20px; }
+  .grid { grid-template-columns: 1fr; gap: 32px; }
+  .navbar-brand span { display: none; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────────────── -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">
+    <img src="photo/hat.png" alt="logo">
+    <span>Bhanudaya School</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="course.html">Course</a>
+    <a href="contact.html" class="active">Contact</a>
+  </div>
+</nav>
+
+<!-- ── Hero ──────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-label"><i class="fa fa-envelope"></i> Get in Touch</div>
+    <h1>We'd Love to<br><span>Hear From You</span></h1>
+    <p>Have a question, suggestion, or want to know more about our school? Reach out and leave a comment below.</p>
+  </div>
+</section>
+
+<!-- ── Main ──────────────────────────────────────────────── -->
+<main class="main">
+  <div class="grid">
+
+    <!-- LEFT: Contact Info -->
+    <div>
+      <div class="section-label">Contact Information</div>
+      <div class="section-title">Reach Us Directly</div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fa fa-map-marker-alt"></i></div>
+        <div class="info-content">
+          <h4>Address</h4>
+          <p>Dumkibas, Nawalpur, Bagmati Province, Nepal</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fa fa-phone"></i></div>
+        <div class="info-content">
+          <h4>Phone</h4>
+          <a href="tel:+977000000000">+977 000-000-000</a>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fa fa-envelope"></i></div>
+        <div class="info-content">
+          <h4>Email</h4>
+          <a href="mailto:abhiparajuli80@gmail.com">abhiparajuli80@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon"><i class="fa fa-clock"></i></div>
+        <div class="info-content">
+          <h4>Office Hours</h4>
+          <p>Sunday – Friday, 10:00 AM – 4:00 PM</p>
+        </div>
+      </div>
+
+      <div class="social-row">
+        <a href="https://www.facebook.com/Bhanudaya-model-secondary-school-767262433633066/" class="social-btn" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.whatsapp.com/" class="social-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://twitter.com/" class="social-btn" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="https://www.youtube.com/" class="social-btn" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.instagram.com/" class="social-btn" target="_blank"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+
+    <!-- RIGHT: Comments -->
+    <div>
+      <div class="section-label">Community</div>
+      <div class="section-title">Leave a Comment</div>
+
+      <div class="comment-section">
+        <div class="comment-header"></div>
+
+        <!-- LOGIN GATE — shown when not logged in -->
+        <div class="login-gate" id="loginGate">
+          <div class="login-gate-icon">💬</div>
+          <h3>Join the conversation</h3>
+          <p>Sign in to leave a comment. It only takes a moment and you won't need to log in again.</p>
+          <div class="login-gate-btns">
+            <button class="btn-primary" onclick="openModal('signin')">
+              <i class="fa fa-sign-in-alt"></i> Sign In
+            </button>
+            <button class="btn-outline" onclick="openModal('signup')">
+              <i class="fa fa-user-plus"></i> Create Account
+            </button>
+          </div>
+        </div>
+
+        <!-- COMPOSER — shown when logged in -->
+        <div class="composer hidden" id="composer">
+          <div class="composer-user">
+            <div class="composer-avatar" id="composerAvatar"></div>
+            <div>
+              <div class="composer-name" id="composerName"></div>
+              <div class="composer-email" id="composerEmail"></div>
+            </div>
+            <button class="composer-logout" onclick="logout()">Sign out</button>
+          </div>
+          <textarea class="composer-textarea" id="commentInput"
+            placeholder="Share your thoughts about our school..."
+            maxlength="500" oninput="updateCharCount()"></textarea>
+          <div class="composer-footer">
+            <span class="char-count" id="charCount">0 / 500</span>
+            <button class="btn-post" id="postBtn" onclick="postComment()">
+              <i class="fa fa-paper-plane"></i> Post Comment
+            </button>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- COMMENTS LIST -->
+        <div class="comments-list">
+          <div class="comments-count" id="commentsCount">Loading comments...</div>
+          <div id="commentsList"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ── Login Modal ────────────────────────────────────────── -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">Welcome Back</h2>
+      <p id="modalSubtitle">Sign in to leave a comment</p>
+      <button class="modal-close" onclick="closeModal()"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Tabs -->
+      <div class="modal-tabs">
+        <button class="tab-btn active" id="tabSignin" onclick="switchTab('signin')">Sign In</button>
+        <button class="tab-btn" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- Sign In Panel -->
+      <div class="tab-panel active" id="panelSignin">
+        <div class="msg-box" id="signinMsg"></div>
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" id="siEmail" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="siPassword" placeholder="Your password">
+        </div>
+        <button class="btn-submit" onclick="signIn()">Sign In</button>
+        <div class="or-divider">or continue with</div>
+        <div id="g_id_onload"
+          data-client_id="695927072092-r3u5rrk1b51n1637e1s4a4dfso1pu0bi.apps.googleusercontent.com"
+          data-callback="handleGoogle">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-theme="outline" data-size="large" data-width="364"></div>
+      </div>
+
+      <!-- Sign Up Panel -->
+      <div class="tab-panel" id="panelSignup">
+        <div class="msg-box" id="signupMsg"></div>
+        <div class="field-row">
+          <div class="field">
+            <label>First Name</label>
+            <input type="text" id="suFname" placeholder="First">
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input type="text" id="suLname" placeholder="Last">
+          </div>
+        </div>
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" id="suEmail" placeholder="your.real@gmail.com">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="suPassword" placeholder="Min 6 characters">
+        </div>
+        <button class="btn-submit" onclick="signUp()">Create Account</button>
+        <div class="or-divider">or continue with</div>
+        <div class="g_id_signin" data-type="standard" data-theme="outline" data-size="large" data-width="364"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/navbar.js"></script>
+<script>
+const API = "http://localhost:5165/api";
+
+// ── Auth state ────────────────────────────────────────────
+function getUser() {
+  const token = localStorage.getItem("token");
+  const name  = localStorage.getItem("fullName");
+  const email = localStorage.getItem("email");
+  return token && name ? { token, name, email } : null;
+}
+
+function saveUser(data) {
+  localStorage.setItem("token",    data.token);
+  localStorage.setItem("fullName", data.fullName);
+  localStorage.setItem("email",    data.email);
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("fullName");
+  localStorage.removeItem("email");
+  renderAuthState();
+}
+
+// ── Render login gate vs composer ────────────────────────
+function renderAuthState() {
+  const user = getUser();
+  const gate     = document.getElementById("loginGate");
+  const composer = document.getElementById("composer");
+
+  if (user) {
+    gate.classList.add("hidden");
+    composer.classList.remove("hidden");
+
+    // Fill composer user info
+    const initials = user.name.split(" ").map(n=>n[0]).join("").toUpperCase().slice(0,2);
+    document.getElementById("composerAvatar").textContent = initials;
+    document.getElementById("composerName").textContent   = user.name;
+    document.getElementById("composerEmail").textContent  = user.email;
+
+    closeModal();
+  } else {
+    gate.classList.remove("hidden");
+    composer.classList.add("hidden");
+  }
+}
+
+// ── Modal ─────────────────────────────────────────────────
+function openModal(tab = 'signin') {
+  document.getElementById("modalOverlay").classList.add("open");
+  switchTab(tab);
+}
+function closeModal() {
+  document.getElementById("modalOverlay").classList.remove("open");
+}
+function closeModalOutside(e) {
+  if (e.target === document.getElementById("modalOverlay")) closeModal();
+}
+function switchTab(tab) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+  document.getElementById("tab"   + cap(tab)).classList.add("active");
+  document.getElementById("panel" + cap(tab)).classList.add("active");
+  if (tab === 'signin') {
+    document.getElementById("modalTitle").textContent    = "Welcome Back";
+    document.getElementById("modalSubtitle").textContent = "Sign in to leave a comment";
+  } else {
+    document.getElementById("modalTitle").textContent    = "Create Account";
+    document.getElementById("modalSubtitle").textContent = "Enter your real Gmail to get a verification link";
+  }
+}
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function showMsg(id, text, type) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = "msg-box " + type;
+}
+
+// ── Sign In ───────────────────────────────────────────────
+async function signIn() {
+  const email    = document.getElementById("siEmail").value.trim();
+  const password = document.getElementById("siPassword").value;
+  if (!email || !password) { showMsg("signinMsg","Please fill in all fields.","error"); return; }
+
+  try {
+    const res  = await fetch(`${API}/auth/signin`, {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (data.success) {
+      saveUser(data);
+      closeModal();
+      renderAuthState();
+      if (typeof window._navbarRefresh === "function") window._navbarRefresh();
+      loadComments();
+    } else {
+      showMsg("signinMsg", data.message || "Incorrect email or password.", "error");
+    }
+  } catch(e) {
+    showMsg("signinMsg","Cannot reach server. Is the API running?","error");
+  }
+}
+
+// ── Sign Up ───────────────────────────────────────────────
+async function signUp() {
+  const fName    = document.getElementById("suFname").value.trim();
+  const lName    = document.getElementById("suLname").value.trim();
+  const email    = document.getElementById("suEmail").value.trim();
+  const password = document.getElementById("suPassword").value;
+
+  if (!fName || !lName || !email || !password) {
+    showMsg("signupMsg","Please fill in all fields.","error"); return;
+  }
+  if (password.length < 6) {
+    showMsg("signupMsg","Password must be at least 6 characters.","error"); return;
+  }
+
+  try {
+    const res  = await fetch(`${API}/auth/register`, {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ fName, lName, email, password })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showMsg("signupMsg", data.message || "Check your inbox for the verification link!", "success");
+      document.getElementById("suFname").value    = "";
+      document.getElementById("suLname").value    = "";
+      document.getElementById("suEmail").value    = "";
+      document.getElementById("suPassword").value = "";
+    } else {
+      showMsg("signupMsg", data.message || "Registration failed.", "error");
+    }
+  } catch(e) {
+    showMsg("signupMsg","Cannot reach server. Is the API running?","error");
+  }
+}
+
+// ── Google Login ──────────────────────────────────────────
+async function handleGoogle(response) {
+  try {
+    const res  = await fetch(`${API}/auth/google`, {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ credential: response.credential })
+    });
+    const data = await res.json();
+    if (data.success) {
+      saveUser(data);
+      closeModal();
+      renderAuthState();
+      if (typeof window._navbarRefresh === "function") window._navbarRefresh();
+      loadComments();
+    }
+  } catch(e) {
+    alert("Google login failed: " + e.message);
+  }
+}
+
+// ── Comments ──────────────────────────────────────────────
+function updateCharCount() {
+  const len = document.getElementById("commentInput").value.length;
+  document.getElementById("charCount").textContent = `${len} / 500`;
+  document.getElementById("postBtn").disabled = len === 0;
+}
+
+async function postComment() {
+  const user = getUser();
+  if (!user) { openModal('signin'); return; }
+
+  const text = document.getElementById("commentInput").value.trim();
+  if (!text) return;
+
+  document.getElementById("postBtn").disabled = true;
+  document.getElementById("postBtn").innerHTML = '<i class="fa fa-spinner fa-spin"></i> Posting...';
+
+  try {
+    await fetch(`${API}/comments`, {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${user.token}`
+      },
+      body: JSON.stringify({
+        userName:    user.name,
+        userEmail:   user.email,
+        userImage:   "",
+        commentText: text
+      })
+    });
+    document.getElementById("commentInput").value = "";
+    document.getElementById("charCount").textContent = "0 / 500";
+    loadComments();
+  } catch(e) {
+    alert("Could not post comment.");
+  } finally {
+    document.getElementById("postBtn").disabled = false;
+    document.getElementById("postBtn").innerHTML = '<i class="fa fa-paper-plane"></i> Post Comment';
+  }
+}
+
+async function loadComments() {
+  try {
+    const res  = await fetch(`${API}/comments`);
+    const data = await res.json();
+
+    document.getElementById("commentsCount").textContent =
+      data.length === 0 ? "No comments yet" : `${data.length} Comment${data.length !== 1 ? 's' : ''}`;
+
+    if (data.length === 0) {
+      document.getElementById("commentsList").innerHTML = `
+        <div class="no-comments">
+          <i class="fa fa-comments"></i>
+          Be the first to leave a comment!
+        </div>`;
+      return;
+    }
+
+    document.getElementById("commentsList").innerHTML = data.map(c => {
+      const initials = c.userName.split(" ").map(n=>n[0]).join("").toUpperCase().slice(0,2);
+      const time     = c.created_at ? timeAgo(new Date(c.created_at)) : "";
+      return `
+        <div class="comment-item">
+          <div class="comment-avatar">
+            ${c.userImage
+              ? `<img src="${c.userImage}" alt="${c.userName}" onerror="this.parentElement.textContent='${initials}'">`
+              : initials}
+          </div>
+          <div class="comment-bubble">
+            <div class="comment-meta">
+              <span class="comment-name">${escHtml(c.userName)}</span>
+              <span class="comment-time">${time}</span>
+            </div>
+            <div class="comment-text">${escHtml(c.commentText)}</div>
+          </div>
+        </div>`;
+    }).join("");
+  } catch(e) {
+    document.getElementById("commentsList").innerHTML =
+      `<div class="no-comments"><i class="fa fa-exclamation-circle"></i> Could not load comments.</div>`;
+  }
+}
+
+// ── Helpers ───────────────────────────────────────────────
+function escHtml(s) {
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function timeAgo(date) {
+  const s = Math.floor((Date.now() - date) / 1000);
+  if (s < 60)  return "just now";
+  if (s < 3600) return Math.floor(s/60) + "m ago";
+  if (s < 86400) return Math.floor(s/3600) + "h ago";
+  return Math.floor(s/86400) + "d ago";
+}
+
+// ── Init ──────────────────────────────────────────────────
+document.getElementById("postBtn").disabled = true;
+renderAuthState();
+loadComments();
+
+// Press Enter (Ctrl+Enter) to submit
+document.getElementById("commentInput").addEventListener("keydown", function(e) {
+  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) postComment();
+});
+</script>
+</body>
+</html>

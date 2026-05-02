@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — Bhanudaya Secondary School</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --ink:      #0f1923;
+      --ink-soft: #4a5568;
+      --ink-mute: #94a3b8;
+      --gold:     #c9a84c;
+      --gold-lt:  #f0d98a;
+      --surface:  #faf9f7;
+      --white:    #ffffff;
+      --border:   #e8e4dc;
+      --radius:   12px;
+      --shadow:   0 4px 24px rgba(15,25,35,0.08);
+      --shadow-lg:0 12px 48px rgba(15,25,35,0.14);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--ink); overflow-x: hidden; }
+
+    /* NAVBAR */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--ink); padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+    .navbar-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .navbar-brand img { width: 36px; height: 36px; object-fit: contain; }
+    .navbar-brand span { font-family: 'Playfair Display', serif; color: var(--white); font-size: 16px; font-weight: 600; }
+    .nav-links { display: flex; gap: 4px; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); background: rgba(255,255,255,0.1); }
+    .menu-toggle { display: none; background: none; border: none; color: var(--white); font-size: 22px; cursor: pointer; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--ink) 0%, #1a2f45 55%, #1e3a5f 100%);
+      padding: 80px 48px 72px; position: relative; overflow: hidden;
+    }
+    .hero-orb {
+      position: absolute; border-radius: 50%; pointer-events: none;
+    }
+    .hero-orb-1 { width: 400px; height: 400px; top: -100px; right: -60px; background: radial-gradient(circle, rgba(201,168,76,0.18), transparent 65%); animation: floatOrb 9s ease-in-out infinite; }
+    .hero-orb-2 { width: 250px; height: 250px; bottom: -60px; left: 8%; background: radial-gradient(circle, rgba(201,168,76,0.10), transparent 65%); animation: floatOrb 11s ease-in-out infinite reverse; }
+    @keyframes floatOrb { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-24px); } }
+
+    .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold-lt); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 20px; margin-bottom: 20px;
+      opacity: 0; animation: fadeUp 0.7s 0.2s ease forwards;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--white); font-size: clamp(36px, 5vw, 60px);
+      line-height: 1.15; margin-bottom: 16px;
+      opacity: 0; animation: fadeUp 0.7s 0.4s ease forwards;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero p {
+      color: rgba(255,255,255,0.65); font-size: 17px;
+      max-width: 540px; line-height: 1.75;
+      opacity: 0; animation: fadeUp 0.7s 0.6s ease forwards;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; } .reveal-d2 { transition-delay: 0.2s; } .reveal-d3 { transition-delay: 0.3s; }
+
+    /* SECTION */
+    section { padding: 88px 48px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3.5vw, 38px); color: var(--ink); line-height: 1.25; margin-bottom: 14px; }
+    .section-sub { font-size: 16px; color: var(--ink-soft); max-width: 560px; line-height: 1.75; margin-bottom: 48px; }
+
+    /* ABOUT INTRO */
+    #about-intro { background: var(--white); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .about-img-wrap { position: relative; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-lg); }
+    .about-img-wrap img { width: 100%; display: block; object-fit: cover; transition: transform 0.6s ease; }
+    .about-img-wrap:hover img { transform: scale(1.04); }
+    .about-badge {
+      position: absolute; bottom: 20px; left: 20px;
+      background: var(--gold); color: var(--ink);
+      padding: 10px 20px; border-radius: 10px;
+      font-weight: 700; font-size: 14px;
+    }
+    .about-text p { font-size: 16px; color: var(--ink-soft); line-height: 1.8; margin-bottom: 20px; }
+    .about-highlights { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .highlight-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 8px 16px; border-radius: 20px;
+      font-size: 13px; font-weight: 600; color: var(--ink);
+      transition: all 0.2s;
+    }
+    .highlight-pill:hover { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+    .highlight-pill i { color: var(--gold); font-size: 12px; }
+    .highlight-pill:hover i { color: var(--ink); }
+
+    /* CAMPUSES */
+    #campuses { background: var(--surface); }
+    .campuses-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .campus-card { border-radius: 16px; overflow: hidden; position: relative; aspect-ratio: 4/3; cursor: pointer; }
+    .campus-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .campus-card:hover img { transform: scale(1.08); }
+    .campus-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(15,25,35,0.85), transparent 50%);
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .campus-name { font-family: 'Playfair Display', serif; color: var(--white); font-size: 18px; }
+    .campus-tag {
+      position: absolute; top: 14px; right: 14px;
+      background: var(--gold); color: var(--ink);
+      font-size: 11px; font-weight: 700; padding: 4px 12px;
+      border-radius: 20px; letter-spacing: 0.06em;
+    }
+
+    /* FACILITIES */
+    #facilities { background: var(--white); }
+    .facilities-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+    .facility-card { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.3s; }
+    .facility-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .fac-img { height: 180px; overflow: hidden; }
+    .fac-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .facility-card:hover .fac-img img { transform: scale(1.06); }
+    .fac-info { padding: 20px; }
+    .fac-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--ink); }
+    .fac-info p { font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink); padding: 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 24px;
+    }
+    .footer-brand { font-family: 'Playfair Display', serif; color: var(--white); font-size: 18px; }
+    .footer-brand span { color: var(--gold); }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 6px; }
+    .social-row { display: flex; gap: 10px; }
+    .social-btn {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; font-size: 14px; transition: all 0.2s;
+    }
+    .social-btn:hover { background: var(--gold); color: var(--ink); transform: translateY(-2px); }
+
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .campuses-grid, .facilities-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+      .navbar-brand span { display: none; }
+      section { padding: 56px 20px; }
+      .hero { padding: 56px 20px; }
+      .menu-toggle { display: block; }
+      .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--ink); flex-direction: column; padding: 16px; gap: 4px; border-top: 1px solid rgba(255,255,255,0.1); }
+      .nav-links.open { display: flex; }
+      footer { flex-direction: column; text-align: center; padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">
+    <img src="photo/hat.png" alt="logo">
+    <span>Bhanudaya School</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="about.html" class="active">About</a>
+    <a href="course.html">Course</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <i class="fa fa-bars"></i>
+  </button>
+</nav>
+
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-inner">
+    <div class="hero-label"><i class="fa fa-school"></i> Our Story</div>
+    <h1>About <span>Bhanudaya</span><br>Secondary School</h1>
+    <p>A community-rooted institution in Dumkibas, Nawalpur — dedicated to quality education, strong values, and the holistic development of every student.</p>
+  </div>
+</section>
+
+<!-- ABOUT INTRO -->
+<section id="about-intro">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <img src="photo/bhanudaya1.jfif" alt="Bhanudaya School">
+        <div class="about-badge"><i class="fa fa-map-marker-alt"></i> Dumkibas, Nawalpur</div>
+      </div>
+      <div class="about-text reveal reveal-d2">
+        <div class="section-label">Who We Are</div>
+        <div class="section-title">Education Built on Community Values</div>
+        <p>Bhanudaya Secondary School (भानुदय माध्यमिक विद्यालय) was established as a community-based educational institution in Dumkibas, Nawalaparasi, Nepal. Affiliated with the National Examination Board (NEB) and approved by the Ministry of Education, we serve students from ECD through Grade 12.</p>
+        <p>We offer Plus Two programs in Management and Education streams, with moderate fee structures and scholarship schemes for deserving students. Our aim is to make quality education accessible to every family in the Nawalpur district.</p>
+        <div class="about-highlights">
+          <span class="highlight-pill"><i class="fa fa-check"></i> NEB Affiliated</span>
+          <span class="highlight-pill"><i class="fa fa-check"></i> MOE Approved</span>
+          <span class="highlight-pill"><i class="fa fa-check"></i> Scholarships Available</span>
+          <span class="highlight-pill"><i class="fa fa-check"></i> ECD to Grade 12</span>
+          <span class="highlight-pill"><i class="fa fa-check"></i> Science Lab</span>
+          <span class="highlight-pill"><i class="fa fa-check"></i> Computer Lab</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAMPUSES -->
+<section id="campuses">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Our Presence</div>
+      <div class="section-title">Schools Across Nawalpur District</div>
+      <p class="section-sub">Though we have one main campus, several affiliated schools serve the wider Nawalpur community with the same commitment to education.</p>
+    </div>
+    <div class="campuses-grid">
+      <div class="campus-card reveal reveal-d1">
+        <img src="photo/bhanudaya1.jfif" alt="Dumkibas Main">
+        <div class="campus-overlay"><span class="campus-name">Dumkibas</span></div>
+        <div class="campus-tag">Main Campus</div>
+      </div>
+      <div class="campus-card reveal reveal-d2">
+        <img src="photo/bhanudaya.jfif" alt="Dumkibas Branch">
+        <div class="campus-overlay"><span class="campus-name">Dumkibas</span></div>
+        <div class="campus-tag">Branch</div>
+      </div>
+      <div class="campus-card reveal reveal-d3">
+        <img src="photo/bhanudaya2.jfif" alt="Sardi Deuurali">
+        <div class="campus-overlay"><span class="campus-name">Sardi, Deuurali</span></div>
+        <div class="campus-tag">Branch</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FACILITIES -->
+<section id="facilities">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Infrastructure</div>
+      <div class="section-title">Our Facilities</div>
+      <p class="section-sub">We provide a well-rounded learning environment with modern facilities that support academic excellence and extracurricular growth.</p>
+    </div>
+    <div class="facilities-grid">
+      <div class="facility-card reveal reveal-d1">
+        <div class="fac-img"><img src="photo/library.jfif" alt="Library"></div>
+        <div class="fac-info">
+          <h3><i class="fa fa-book" style="color:var(--gold);margin-right:8px"></i>School Library</h3>
+          <p>A comprehensive collection of academic resources, reference books, and journals to support learners at every level.</p>
+        </div>
+      </div>
+      <div class="facility-card reveal reveal-d2">
+        <div class="fac-img"><img src="photo/facilities.jfif" alt="Computer Lab"></div>
+        <div class="fac-info">
+          <h3><i class="fa fa-desktop" style="color:var(--gold);margin-right:8px"></i>Computer Lab</h3>
+          <p>Internet-connected computers for digital learning, coding classes, and preparation for the modern workforce.</p>
+        </div>
+      </div>
+      <div class="facility-card reveal reveal-d3">
+        <div class="fac-img"><img src="photo/bench.jfif" alt="Classrooms"></div>
+        <div class="fac-info">
+          <h3><i class="fa fa-chair" style="color:var(--gold);margin-right:8px"></i>Comfortable Classrooms</h3>
+          <p>Spacious, well-lit classrooms with proper seating, whiteboards, and multimedia projection systems.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-brand">Bhanudaya <span>Secondary School</span></div>
+    <div class="footer-copy">© 2024 Made with <i class="fa fa-heart" style="color:var(--gold)"></i> by Abhi Parajuli</div>
+  </div>
+  <div class="social-row">
+    <a href="https://www.facebook.com/Bhanudaya-model-secondary-school-767262433633066/" class="social-btn" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.whatsapp.com/" class="social-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://twitter.com/" class="social-btn" target="_blank"><i class="fab fa-twitter"></i></a>
+    <a href="https://www.youtube.com/" class="social-btn" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.instagram.com/" class="social-btn" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
+</footer>
+
+<script src="/js/navbar.js"></script>
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+</body>
+</html>

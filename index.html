@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bhanudaya Secondary School — Dumkibas, Nawalpur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --ink:      #0f1923;
+      --ink-soft: #4a5568;
+      --ink-mute: #94a3b8;
+      --gold:     #c9a84c;
+      --gold-lt:  #f0d98a;
+      --surface:  #faf9f7;
+      --white:    #ffffff;
+      --border:   #e8e4dc;
+      --radius:   12px;
+      --shadow:   0 4px 24px rgba(15,25,35,0.08);
+      --shadow-lg:0 12px 48px rgba(15,25,35,0.14);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--surface);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--ink);
+      padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+    .navbar-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .navbar-brand img { width: 36px; height: 36px; object-fit: contain; }
+    .navbar-brand span {
+      font-family: 'Playfair Display', serif;
+      color: var(--white); font-size: 16px; font-weight: 600;
+    }
+    .nav-links { display: flex; gap: 4px; align-items: center; }
+    .nav-links a {
+      color: rgba(255,255,255,0.7); text-decoration: none;
+      padding: 8px 14px; border-radius: 8px;
+      font-size: 14px; font-weight: 500;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--white); background: rgba(255,255,255,0.1);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 92vh;
+      background: linear-gradient(135deg, var(--ink) 0%, #1a2f45 55%, #1e3a5f 100%);
+      display: flex; align-items: center;
+      padding: 80px 48px;
+      position: relative; overflow: hidden;
+    }
+
+    /* animated background orbs */
+    .hero-orb {
+      position: absolute; border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-orb-1 {
+      width: 500px; height: 500px;
+      top: -120px; right: -80px;
+      background: radial-gradient(circle, rgba(201,168,76,0.18), transparent 65%);
+      animation: floatOrb 8s ease-in-out infinite;
+    }
+    .hero-orb-2 {
+      width: 300px; height: 300px;
+      bottom: -80px; left: 5%;
+      background: radial-gradient(circle, rgba(201,168,76,0.10), transparent 65%);
+      animation: floatOrb 10s ease-in-out infinite reverse;
+    }
+    .hero-orb-3 {
+      width: 180px; height: 180px;
+      top: 40%; left: 45%;
+      background: radial-gradient(circle, rgba(255,255,255,0.04), transparent 65%);
+      animation: floatOrb 6s ease-in-out infinite;
+    }
+    @keyframes floatOrb {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    .hero-inner {
+      max-width: 1100px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .hero-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold-lt); font-size: 12px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 20px;
+      margin-bottom: 28px;
+      opacity: 0; animation: fadeUp 0.7s 0.2s ease forwards;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--white); font-size: clamp(38px, 6vw, 72px);
+      line-height: 1.1; margin-bottom: 24px;
+      opacity: 0; animation: fadeUp 0.7s 0.4s ease forwards;
+    }
+    .hero h1 .accent { color: var(--gold); display: block; }
+    .hero p {
+      color: rgba(255,255,255,0.65); font-size: 18px;
+      max-width: 520px; line-height: 1.75;
+      margin-bottom: 40px;
+      opacity: 0; animation: fadeUp 0.7s 0.6s ease forwards;
+    }
+    .hero-actions {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.7s 0.8s ease forwards;
+    }
+    .btn-gold {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px; background: var(--gold); color: var(--ink);
+      border-radius: 10px; font-size: 15px; font-weight: 700;
+      text-decoration: none; transition: all 0.25s;
+      box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+    }
+    .btn-gold:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.5); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px; background: transparent; color: var(--white);
+      border: 1.5px solid rgba(255,255,255,0.3); border-radius: 10px;
+      font-size: 15px; font-weight: 600; text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,0.08); }
+
+    /* hero stats */
+    .hero-stats {
+      display: flex; gap: 40px; margin-top: 64px;
+      padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.12);
+      opacity: 0; animation: fadeUp 0.7s 1.0s ease forwards;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px; color: var(--gold); font-weight: 700;
+    }
+    .stat-lbl { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+
+    /* ── SECTION BASE ── */
+    section { padding: 96px 48px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.5vw, 40px);
+      color: var(--ink); line-height: 1.25;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 16px; color: var(--ink-soft); max-width: 520px;
+      line-height: 1.7; margin-bottom: 56px;
+    }
+
+    /* ── COURSES ── */
+    #courses { background: var(--white); }
+    .courses-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+    .course-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px 28px;
+      position: relative; overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .course-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .course-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+    .course-card:hover::before { transform: scaleX(1); }
+    .course-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--ink), #1e3a5f);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .course-icon i { color: var(--gold); font-size: 20px; }
+    .course-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; margin-bottom: 12px; color: var(--ink);
+    }
+    .course-card p { font-size: 14px; color: var(--ink-soft); line-height: 1.7; }
+
+    /* ── LOCATIONS ── */
+    #locations { background: var(--surface); }
+    .locations-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .location-card {
+      border-radius: 16px; overflow: hidden;
+      position: relative; aspect-ratio: 4/3;
+      cursor: pointer;
+    }
+    .location-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .location-card:hover img { transform: scale(1.08); }
+    .location-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(15,25,35,0.85), transparent 50%);
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .location-name {
+      font-family: 'Playfair Display', serif;
+      color: var(--white); font-size: 18px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .location-badge {
+      position: absolute; top: 14px; right: 14px;
+      background: var(--gold); color: var(--ink);
+      font-size: 11px; font-weight: 700;
+      padding: 4px 12px; border-radius: 20px;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── FACILITIES ── */
+    #facilities { background: var(--white); }
+    .facilities-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+    .facility-card {
+      border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    .facility-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .facility-img { height: 180px; overflow: hidden; }
+    .facility-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .facility-card:hover .facility-img img { transform: scale(1.06); }
+    .facility-info { padding: 20px; }
+    .facility-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--ink); }
+    .facility-info p { font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+
+    /* ── CTA ── */
+    #cta {
+      background: linear-gradient(135deg, var(--ink), #1e3a5f);
+      text-align: center; padding: 96px 48px;
+    }
+    #cta h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--white); font-size: clamp(28px, 4vw, 48px);
+      margin-bottom: 16px;
+    }
+    #cta p { color: rgba(255,255,255,0.6); font-size: 16px; margin-bottom: 36px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); padding: 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 24px;
+    }
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      color: var(--white); font-size: 18px;
+    }
+    .footer-brand span { color: var(--gold); }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.4); }
+    .social-row { display: flex; gap: 10px; }
+    .social-btn {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; font-size: 14px;
+      transition: all 0.2s;
+    }
+    .social-btn:hover { background: var(--gold); color: var(--ink); transform: translateY(-2px); }
+
+    /* ── MOBILE ── */
+    .menu-toggle { display: none; background: none; border: none; color: var(--white); font-size: 22px; cursor: pointer; }
+
+    @media (max-width: 900px) {
+      .courses-grid, .locations-grid, .facilities-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+      section { padding: 64px 20px; }
+      .hero { padding: 60px 20px; min-height: auto; }
+      .hero-stats { gap: 24px; flex-wrap: wrap; }
+      .navbar-brand span { display: none; }
+      .menu-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 64px; left: 0; right: 0;
+        background: var(--ink); flex-direction: column;
+        padding: 16px; gap: 4px; border-top: 1px solid rgba(255,255,255,0.1);
+      }
+      .nav-links.open { display: flex; }
+      footer { flex-direction: column; text-align: center; padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">
+    <img src="photo/hat.png" alt="logo">
+    <span>Bhanudaya School</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html" class="active">Home</a>
+    <a href="about.html">About</a>
+    <a href="course.html">Course</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <i class="fa fa-bars"></i>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+  <div class="hero-inner">
+    <div class="hero-label"><i class="fa fa-graduation-cap"></i> Nawalpur's Finest Institution</div>
+    <h1>Shaping Tomorrow's<br><span class="accent">Leaders Today</span></h1>
+    <p>Bhanudaya Secondary School in Dumkibas, Nawalpur, Nepal — committed to quality education from ECD through Grade 12 with modern facilities and dedicated faculty.</p>
+    <div class="hero-actions">
+      <a href="about.html" class="btn-gold"><i class="fa fa-arrow-right"></i> Learn About Us</a>
+      <a href="contact.html" class="btn-ghost"><i class="fa fa-envelope"></i> Get in Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">1000+</div>
+        <div class="stat-lbl">Students Enrolled</div>
+      </div>
+      <div>
+        <div class="stat-num">50+</div>
+        <div class="stat-lbl">Expert Teachers</div>
+      </div>
+      <div>
+        <div class="stat-num">ECD–12</div>
+        <div class="stat-lbl">Education Levels</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">What We Offer</div>
+      <div class="section-title">Courses &amp; Programs</div>
+      <p class="section-sub">A broad curriculum spanning school-level through +2, designed to prepare students for higher education and professional careers.</p>
+    </div>
+    <div class="courses-grid">
+      <div class="course-card reveal reveal-d1">
+        <div class="course-icon"><i class="fa fa-book-open"></i></div>
+        <h3>Academic Choice</h3>
+        <p>Diverse online and classroom courses updated regularly, covering Engineering, Management, Science, and foreign language programs for aspiring learners at every stage.</p>
+      </div>
+      <div class="course-card reveal reveal-d2">
+        <div class="course-icon"><i class="fa fa-university"></i></div>
+        <h3>+2 Degree Programs</h3>
+        <p>Management and Education streams approved by NEB. A +2 qualification opens doors to teaching positions for Grades 1–8, while a Bachelor's degree qualifies up to Grade 12.</p>
+      </div>
+      <div class="course-card reveal reveal-d3">
+        <div class="course-icon"><i class="fa fa-briefcase"></i></div>
+        <h3>Career Pathways</h3>
+        <p>Multiple teacher and staff positions available including English, Computer, and PT teachers. Post-graduation opportunities aligned with national educational standards.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATIONS -->
+<section id="locations">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Our Campuses</div>
+      <div class="section-title">Schools in Nawalpur District</div>
+      <p class="section-sub">Several affiliated schools serve the Nawalpur district community, each committed to the same standard of educational excellence.</p>
+    </div>
+    <div class="locations-grid">
+      <div class="location-card reveal reveal-d1">
+        <img src="photo/bhanudaya1.jfif" alt="Dumkibas Campus">
+        <div class="location-overlay"><span class="location-name">Dumkibas</span></div>
+        <div class="location-badge">Main Campus</div>
+      </div>
+      <div class="location-card reveal reveal-d2">
+        <img src="photo/bhanudaya.jfif" alt="Dumkibas Branch">
+        <div class="location-overlay"><span class="location-name">Dumkibas</span></div>
+        <div class="location-badge">Branch</div>
+      </div>
+      <div class="location-card reveal reveal-d3">
+        <img src="photo/bhanudaya2.jfif" alt="Sardi Deuurali">
+        <div class="location-overlay"><span class="location-name">Sardi, Deuurali</span></div>
+        <div class="location-badge">Branch</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FACILITIES -->
+<section id="facilities">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Infrastructure</div>
+      <div class="section-title">World-Class Facilities</div>
+      <p class="section-sub">Library, Science Lab, Computer Lab, Multimedia Hall, Counseling, Conference Hall, Music, Dance, and Sports — everything to nurture the whole student.</p>
+    </div>
+    <div class="facilities-grid">
+      <div class="facility-card reveal reveal-d1">
+        <div class="facility-img"><img src="photo/library.jfif" alt="Library"></div>
+        <div class="facility-info">
+          <h3><i class="fa fa-book" style="color:var(--gold);margin-right:8px"></i>School Library</h3>
+          <p>A rich collection of academic books, journals, and reference materials to support every learner's curiosity.</p>
+        </div>
+      </div>
+      <div class="facility-card reveal reveal-d2">
+        <div class="facility-img"><img src="photo/facilities.jfif" alt="Computer Lab"></div>
+        <div class="facility-info">
+          <h3><i class="fa fa-desktop" style="color:var(--gold);margin-right:8px"></i>Computer Lab</h3>
+          <p>Modern computers with internet access to develop digital literacy skills essential for the 21st century.</p>
+        </div>
+      </div>
+      <div class="facility-card reveal reveal-d3">
+        <div class="facility-img"><img src="photo/bench.jfif" alt="Classrooms"></div>
+        <div class="facility-info">
+          <h3><i class="fa fa-chair" style="color:var(--gold);margin-right:8px"></i>Comfortable Classrooms</h3>
+          <p>Well-equipped classrooms with comfortable seating designed to foster an ideal learning environment.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="container">
+    <div class="reveal">
+      <h2>Ready to Join Our School Community?</h2>
+      <p>Enroll today or contact us to learn more about admissions, scholarships, and programs.</p>
+      <a href="contact.html" class="btn-gold" style="display:inline-flex;gap:10px;align-items:center;font-size:16px;padding:16px 40px;">
+        <i class="fa fa-envelope"></i> Contact Us
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">Bhanudaya <span>Secondary School</span></div>
+    <div class="footer-copy" style="margin-top:6px">© 2024 Made with <i class="fa fa-heart" style="color:var(--gold)"></i> by Abhi Parajuli</div>
+  </div>
+  <div class="social-row">
+    <a href="https://www.facebook.com/Bhanudaya-model-secondary-school-767262433633066/" class="social-btn" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.whatsapp.com/" class="social-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://twitter.com/" class="social-btn" target="_blank"><i class="fab fa-twitter"></i></a>
+    <a href="https://www.youtube.com/" class="social-btn" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.instagram.com/" class="social-btn" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
+</footer>
+
+<script src="js/navbar.js"></script>
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+</body>
+</html>

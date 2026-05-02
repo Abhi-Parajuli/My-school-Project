@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Courses — Bhanudaya Secondary School</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --ink:      #0f1923;
+      --ink-soft: #4a5568;
+      --ink-mute: #94a3b8;
+      --gold:     #c9a84c;
+      --gold-lt:  #f0d98a;
+      --surface:  #faf9f7;
+      --white:    #ffffff;
+      --border:   #e8e4dc;
+      --shadow:   0 4px 24px rgba(15,25,35,0.08);
+      --shadow-lg:0 12px 48px rgba(15,25,35,0.14);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--ink); overflow-x: hidden; }
+
+    /* NAVBAR */
+    .navbar { position: sticky; top: 0; z-index: 100; background: var(--ink); padding: 0 48px; display: flex; align-items: center; justify-content: space-between; height: 64px; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+    .navbar-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .navbar-brand img { width: 36px; height: 36px; object-fit: contain; }
+    .navbar-brand span { font-family: 'Playfair Display', serif; color: var(--white); font-size: 16px; font-weight: 600; }
+    .nav-links { display: flex; gap: 4px; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); background: rgba(255,255,255,0.1); }
+    .menu-toggle { display: none; background: none; border: none; color: var(--white); font-size: 22px; cursor: pointer; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--ink) 0%, #1a2f45 55%, #1e3a5f 100%);
+      padding: 80px 48px 72px; position: relative; overflow: hidden;
+    }
+    .hero-orb { position: absolute; border-radius: 50%; pointer-events: none; }
+    .hero-orb-1 { width: 400px; height: 400px; top: -100px; right: -60px; background: radial-gradient(circle, rgba(201,168,76,0.18), transparent 65%); animation: floatOrb 9s ease-in-out infinite; }
+    .hero-orb-2 { width: 250px; height: 250px; bottom: -60px; left: 8%; background: radial-gradient(circle, rgba(201,168,76,0.10), transparent 65%); animation: floatOrb 11s ease-in-out infinite reverse; }
+    @keyframes floatOrb { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-24px); } }
+    .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-label { display: inline-flex; align-items: center; gap: 8px; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--gold-lt); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; opacity: 0; animation: fadeUp 0.7s 0.2s ease forwards; }
+    .hero h1 { font-family: 'Playfair Display', serif; color: var(--white); font-size: clamp(36px, 5vw, 60px); line-height: 1.15; margin-bottom: 16px; opacity: 0; animation: fadeUp 0.7s 0.4s ease forwards; }
+    .hero h1 span { color: var(--gold); }
+    .hero p { color: rgba(255,255,255,0.65); font-size: 17px; max-width: 540px; line-height: 1.75; opacity: 0; animation: fadeUp 0.7s 0.6s ease forwards; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; } .reveal-d2 { transition-delay: 0.2s; } .reveal-d3 { transition-delay: 0.3s; }
+
+    section { padding: 88px 48px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3.5vw, 38px); color: var(--ink); line-height: 1.25; margin-bottom: 14px; }
+    .section-sub { font-size: 16px; color: var(--ink-soft); max-width: 560px; line-height: 1.75; margin-bottom: 56px; }
+
+    /* MAIN COURSES */
+    #programs { background: var(--white); }
+    .programs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+    .program-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 36px 28px;
+      position: relative; overflow: hidden;
+      transition: all 0.35s ease;
+    }
+    .program-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+    .program-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: transparent; background: var(--white); }
+    .program-card:hover::before { transform: scaleX(1); }
+    .prog-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: linear-gradient(135deg, var(--ink), #1e3a5f);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .prog-icon i { color: var(--gold); font-size: 22px; }
+    .program-card h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 14px; color: var(--ink); }
+    .program-card p { font-size: 14px; color: var(--ink-soft); line-height: 1.75; }
+
+    /* STREAMS */
+    #streams { background: var(--surface); }
+    .streams-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .stream-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 20px; padding: 40px;
+      display: flex; gap: 24px; align-items: flex-start;
+      transition: all 0.3s;
+    }
+    .stream-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    .stream-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px; font-weight: 800;
+      color: rgba(201,168,76,0.2); line-height: 1;
+      flex-shrink: 0;
+    }
+    .stream-content h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 12px; color: var(--ink); }
+    .stream-content p { font-size: 14px; color: var(--ink-soft); line-height: 1.75; }
+
+    /* JOBS */
+    #jobs { background: var(--white); }
+    .jobs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .job-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
+      display: flex; align-items: center; gap: 16px;
+      transition: all 0.25s;
+    }
+    .job-card:hover { border-color: var(--gold); box-shadow: var(--shadow); transform: translateY(-2px); }
+    .job-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--ink), #1e3a5f);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .job-icon i { color: var(--gold); font-size: 16px; }
+    .job-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+    .job-type { font-size: 12px; color: var(--ink-mute); margin-top: 2px; }
+
+    /* CTA */
+    #cta {
+      background: linear-gradient(135deg, var(--ink), #1e3a5f);
+      text-align: center; padding: 88px 48px;
+    }
+    #cta h2 { font-family: 'Playfair Display', serif; color: var(--white); font-size: clamp(28px,4vw,44px); margin-bottom: 16px; }
+    #cta p { color: rgba(255,255,255,0.6); font-size: 16px; margin-bottom: 36px; }
+    .btn-gold { display: inline-flex; align-items: center; gap: 10px; padding: 14px 36px; background: var(--gold); color: var(--ink); border-radius: 10px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.25s; box-shadow: 0 4px 20px rgba(201,168,76,0.4); }
+    .btn-gold:hover { background: var(--gold-lt); transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer { background: var(--ink); padding: 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+    .footer-brand { font-family: 'Playfair Display', serif; color: var(--white); font-size: 18px; }
+    .footer-brand span { color: var(--gold); }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 6px; }
+    .social-row { display: flex; gap: 10px; }
+    .social-btn { width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 14px; transition: all 0.2s; }
+    .social-btn:hover { background: var(--gold); color: var(--ink); transform: translateY(-2px); }
+
+    @media (max-width: 900px) {
+      .programs-grid, .streams-grid, .jobs-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; } .navbar-brand span { display: none; }
+      section { padding: 56px 20px; } .hero { padding: 56px 20px; }
+      .menu-toggle { display: block; }
+      .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--ink); flex-direction: column; padding: 16px; gap: 4px; border-top: 1px solid rgba(255,255,255,0.1); }
+      .nav-links.open { display: flex; }
+      footer { flex-direction: column; text-align: center; padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">
+    <img src="photo/hat.png" alt="logo">
+    <span>Bhanudaya School</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="course.html" class="active">Course</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <i class="fa fa-bars"></i>
+  </button>
+</nav>
+
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-inner">
+    <div class="hero-label"><i class="fa fa-graduation-cap"></i> Education Programs</div>
+    <h1>Courses We <span>Offer</span></h1>
+    <p>From foundational school-level programs through NEB-affiliated Plus Two, we provide academic pathways designed to shape capable, confident graduates.</p>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section id="programs">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">What You Can Study</div>
+      <div class="section-title">Academic Programs</div>
+      <p class="section-sub">We regularly expand our course offerings to ensure every student finds the right path toward their goals.</p>
+    </div>
+    <div class="programs-grid">
+      <div class="program-card reveal reveal-d1">
+        <div class="prog-icon"><i class="fa fa-book-open"></i></div>
+        <h3>Academic Choice</h3>
+        <p>Diverse online and classroom courses covering Engineering, Management, Science, and foreign languages. New courses are added regularly to serve every learner's ambition.</p>
+      </div>
+      <div class="program-card reveal reveal-d2">
+        <div class="prog-icon"><i class="fa fa-university"></i></div>
+        <h3>Degree Programs</h3>
+        <p>Earn your +2 certificate (the minimum required for job applications) or continue to a Bachelor's degree. Each level unlocks new career opportunities in education and beyond.</p>
+      </div>
+      <div class="program-card reveal reveal-d3">
+        <div class="prog-icon"><i class="fa fa-award"></i></div>
+        <h3>Post-Graduation</h3>
+        <p>Multiple professional posts are open to qualified graduates. From English teaching to webpage design instruction, we connect qualified candidates with meaningful positions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STREAMS -->
+<section id="streams">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Plus Two Streams</div>
+      <div class="section-title">Specialization Tracks</div>
+      <p class="section-sub">Our NEB-approved +2 programs prepare students for university admission and professional careers.</p>
+    </div>
+    <div class="streams-grid">
+      <div class="stream-card reveal reveal-d1">
+        <div class="stream-num">01</div>
+        <div class="stream-content">
+          <h3>Management Stream</h3>
+          <p>Covers Business Studies, Accountancy, Economics, and Computer Science. Ideal for students pursuing careers in business, finance, and administration.</p>
+        </div>
+      </div>
+      <div class="stream-card reveal reveal-d2">
+        <div class="stream-num">02</div>
+        <div class="stream-content">
+          <h3>Education Stream</h3>
+          <p>Designed for students aspiring to become teachers and educators. Covers pedagogy, child development, curriculum studies, and foundational teaching methods.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOB OPENINGS -->
+<section id="jobs">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Career Opportunities</div>
+      <div class="section-title">Open Positions at Our School</div>
+      <p class="section-sub">We are actively seeking qualified candidates for several roles. Contact us to apply.</p>
+    </div>
+    <div class="jobs-grid">
+      <div class="job-card reveal reveal-d1">
+        <div class="job-icon"><i class="fa fa-language"></i></div>
+        <div><div class="job-title">English Teacher</div><div class="job-type">Bachelor's Degree Required</div></div>
+      </div>
+      <div class="job-card reveal reveal-d2">
+        <div class="job-icon"><i class="fa fa-globe"></i></div>
+        <div><div class="job-title">Web Design Teacher</div><div class="job-type">IT Background Required</div></div>
+      </div>
+      <div class="job-card reveal reveal-d3">
+        <div class="job-icon"><i class="fa fa-bolt"></i></div>
+        <div><div class="job-title">Electrical Teacher</div><div class="job-type">Technical Diploma Required</div></div>
+      </div>
+      <div class="job-card reveal reveal-d1">
+        <div class="job-icon"><i class="fa fa-running"></i></div>
+        <div><div class="job-title">PT Teacher</div><div class="job-type">Sports Background Required</div></div>
+      </div>
+      <div class="job-card reveal reveal-d2">
+        <div class="job-icon"><i class="fa fa-tasks"></i></div>
+        <div><div class="job-title">Administrative Staff</div><div class="job-type">+2 Minimum Required</div></div>
+      </div>
+      <div class="job-card reveal reveal-d3">
+        <div class="job-icon"><i class="fa fa-desktop"></i></div>
+        <div><div class="job-title">Computer Teacher</div><div class="job-type">Bachelor's in IT Required</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="container">
+    <div class="reveal">
+      <h2>Ready to Apply or Enroll?</h2>
+      <p>Contact us today to learn about admissions, scholarships, and available faculty positions.</p>
+      <a href="contact.html" class="btn-gold"><i class="fa fa-envelope"></i> Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-brand">Bhanudaya <span>Secondary School</span></div>
+    <div class="footer-copy">© 2024 Made with <i class="fa fa-heart" style="color:var(--gold)"></i> by Abhi Parajuli</div>
+  </div>
+  <div class="social-row">
+    <a href="https://www.facebook.com/Bhanudaya-model-secondary-school-767262433633066/" class="social-btn" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.whatsapp.com/" class="social-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://twitter.com/" class="social-btn" target="_blank"><i class="fab fa-twitter"></i></a>
+    <a href="https://www.youtube.com/" class="social-btn" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.instagram.com/" class="social-btn" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
+</footer>
+
+<script src="js/navbar.js"></script>
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+</body>
+</html>

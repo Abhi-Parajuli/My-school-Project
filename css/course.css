@@ -1,0 +1,146 @@
+body{
+background-color: white;
+
+}
+
+
+#main{
+    background-image:lightgray;
+    background-repeat:  no-repeat;
+    background-size: cover;    
+    height: auto;
+    width: 80%;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.header{
+    min-height:50vh;
+    width: 100%;
+    background-image:linear-gradient(rgba(4,9,3,0.3),rgba(4,9,3,0.3)),url(image1.jpg);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    
+}
+nav{
+    display: flex;
+    padding: 2% 6%;
+    justify-content: space-between;
+    align-items: center;
+    background-image: url(../image.jpg);
+}
+nav img{
+    width: 100px;
+}
+.nav-links{
+    flex: 1;
+    text-align: right;
+}
+.nav-links ul li{
+    list-style: none;
+    display: inline-block;
+    padding: 8px 12px;
+    position: relative;
+ 
+}
+.nav-links ul li a{
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.nav-links ul li:after{
+    content:'';
+    width: 0%;
+    height: 2px;
+    background: #f44336;
+    display: block;
+    margin: auto;
+    transition: 0.5s;
+}
+.nav-links ul li:hover:after{
+    width: 100%;
+
+}
+.text-box{
+    width: 90%;
+    color: white;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    font-style: normal;
+    font-size: 67px;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    font-weight: 900;
+    
+}
+
+/*---course---*/
+.course{
+    width: 80%;
+    margin: auto;
+    text-align:center;
+    padding-top:100px;
+}
+.course h1{
+    font-size: 36px;
+    font-weight: 300;
+}
+p{
+    color: #777;
+    font-size: 14px;
+    font-weight: 300;
+    line-height:22px;
+    padding: 10px;
+}
+.row{
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
+}
+.column{
+    flex-basis: 31%;
+    background: orange;
+    border-radius: 10px;
+    margin-bottom: 5%;
+    padding: 20px 12px;
+    box-sizing: border-box;
+    transition: 0.1s;
+    
+}
+.column p{
+    color: black;
+}
+h3{
+    text-align: center;
+    font-weight:600;
+    margin: 10px 0;
+}
+.column:hover{
+    box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.3);
+}
+
+
+
+.icon {
+    flex-basis: 31%;
+    color: #f44336;
+    margin-bottom: 12px;
+    padding: 5px 12px;
+    text-align: center;
+    
+}
+.icon .fa{
+    color: #f44336;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    cursor: pointer; 
+}
+.last{
+   text-align: center;
+    color: #f44336;
+    padding: 10px 10px;
+}
+
