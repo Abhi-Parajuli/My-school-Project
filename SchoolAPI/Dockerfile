@@ -8,7 +8,6 @@ WORKDIR /src
 # ← This is the fix, add the subfolder prefix
 COPY ["SchoolAPI/SchoolAPI.csproj", "SchoolAPI/"]
 RUN dotnet restore "SchoolAPI/SchoolAPI.csproj"
-
 COPY . .
 WORKDIR "/src/SchoolAPI"
 RUN dotnet publish "SchoolAPI.csproj" -c Release -o /app/publish
