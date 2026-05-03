@@ -14,17 +14,14 @@ public class AuthController : ControllerBase
     private readonly AppDbContext  _db;
     private readonly TokenService  _tokenService;
     private readonly EmailService  _emailService;
-    private readonly IConfiguration _config;
+   
 
-    public AuthController(AppDbContext db, TokenService tokenService,
-                          EmailService emailService, IConfiguration config)
-    {
-        _db           = db;
-        _tokenService = tokenService;
-        _emailService = emailService;
-        _config       = config;
-    }
-
+   public AuthController(AppDbContext db, TokenService tokenService, EmailService emailService)
+{
+    _db           = db;
+    _tokenService = tokenService;
+    _emailService = emailService;
+}
     // ── POST /api/auth/register ───────────────────────────────────────────────
     // Creates account but does NOT log in — sends verification email first
     [HttpPost("register")]
@@ -161,10 +158,11 @@ public class AuthController : ControllerBase
         GoogleJsonWebSignature.Payload payload;
         try
         {
-            var settings = new GoogleJsonWebSignature.ValidationSettings
-            {
-                Audience = new[] { _config["Google:ClientId"] }
-            };
+           var settings = new GoogleJsonWebSignature.ValidationSettings
+{
+    Audience = new[] { Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID") }  
+};
+
             payload = await GoogleJsonWebSignature.ValidateAsync(req.Credential, settings);
         }
         catch
