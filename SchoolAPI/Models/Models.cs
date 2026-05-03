@@ -68,3 +68,22 @@ public class CommentRequest
     public string? UserImage { get; set; }
     public string CommentText { get; set; } = string.Empty;
 }
+
+// ── Password reset DTOs ───────────────────────────────────────────────────────
+public class ForgotPasswordRequest
+{
+    public string Email { get; set; } = string.Empty;
+}
+
+public class VerifyOtpRequest
+{
+    public string Email { get; set; } = string.Empty;
+    public string Otp   { get; set; } = string.Empty;
+}
+
+public class ResetPasswordRequest
+{
+    public string Email      { get; set; } = string.Empty;
+    public string ResetToken { get; set; } = string.Empty;
+    public string NewPassword{ get; set; } = string.Empty;
+}
