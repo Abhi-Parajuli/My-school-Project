@@ -841,17 +841,32 @@ async function signUp() {
 // ── Google Login ──────────────────────────────────────────
 async function handleGoogle(response) {
   try {
-    const res  = await fetch(`${API}/auth/google`, {
-      method:"POST", headers:{"Content-Type":"application/json"},
+    const res = await fetch(`${API}/auth/google`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ credential: response.credential })
     });
-    const data = await res.json();
+
+    // ✅ Check if response has content before parsing
+    const text = await res.text();
+    console.log("Google response status:", res.status);
+    console.log("Google response body:", text);
+
+    if (!text) {
+      alert("Server returned empty response. Check Render logs.");
+      return;
+    }
+
+    const data = JSON.parse(text);
+
     if (data.success) {
       saveUser(data);
       closeModal();
       renderAuthState();
       if (typeof window._navbarRefresh === "function") window._navbarRefresh();
       loadComments();
+    } else {
+      alert("Google login failed: " + data.message);
     }
   } catch(e) {
     alert("Google login failed: " + e.message);
