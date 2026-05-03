@@ -8,7 +8,7 @@
  *        without needing a page refresh.
  *
  * Usage: Add this just before </body> on every page:
- *   <script src="navbar.js"></script>
+ *   <script src="js/navbar.js"></script>
  */
 
 (function () {
