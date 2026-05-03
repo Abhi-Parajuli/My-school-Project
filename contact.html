@@ -390,6 +390,101 @@ body {
 
 /* Google button wrapper */
 .g_id_signin { display: flex; justify-content: center; }
+/* ── Forgot password link ── */
+.forgot-link {
+  background: none; border: none; cursor: pointer;
+  color: var(--gold); font-size: 13px; font-weight: 600;
+  font-family: 'DM Sans', sans-serif; padding: 0;
+  transition: color 0.2s;
+}
+.forgot-link:hover { color: #a07830; text-decoration: underline; }
+
+/* ── Forgot password modal ── */
+.fp-modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(15,25,35,0.65); backdrop-filter: blur(5px);
+  z-index: 1100; align-items: center; justify-content: center;
+}
+.fp-modal-overlay.open { display: flex; }
+.fp-modal {
+  background: var(--white); border-radius: 20px;
+  width: 90%; max-width: 420px;
+  box-shadow: var(--shadow-lg);
+  animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  overflow: hidden;
+}
+.fp-steps {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+}
+.fp-step {
+  flex: 1; text-align: center; font-size: 11px; font-weight: 700;
+  color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.06em;
+  transition: color 0.3s;
+}
+.fp-step.active { color: var(--gold); }
+.fp-step.done   { color: #16a34a; }
+.fp-step-num {
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--border); color: var(--ink-mute);
+  font-size: 13px; font-weight: 800; margin: 0 auto 5px;
+  transition: all 0.3s;
+}
+.fp-step.active .fp-step-num { background: var(--gold); color: var(--ink); box-shadow: 0 2px 8px rgba(201,168,76,0.4); }
+.fp-step.done .fp-step-num   { background: #16a34a; color: #fff; }
+.fp-connector { width: 28px; height: 2px; background: var(--border); flex-shrink: 0; transition: background 0.4s; }
+.fp-connector.done { background: #16a34a; }
+.fp-header { background: var(--ink); padding: 24px 28px; position: relative; }
+.fp-header h2 { font-family: 'Playfair Display', serif; color: var(--white); font-size: 21px; margin-bottom: 4px; }
+.fp-header p  { color: rgba(255,255,255,0.6); font-size: 13px; line-height: 1.5; }
+.fp-close {
+  position: absolute; top: 18px; right: 20px;
+  background: rgba(255,255,255,0.1); border: none;
+  color: var(--white); width: 32px; height: 32px;
+  border-radius: 8px; cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.fp-close:hover { background: rgba(255,255,255,0.2); }
+.fp-body { padding: 28px; }
+.otp-row { display: flex; gap: 10px; justify-content: center; margin: 8px 0 20px; }
+.otp-box {
+  width: 52px; height: 58px; border: 2px solid var(--border);
+  border-radius: 12px; text-align: center; font-size: 26px;
+  font-weight: 800; font-family: 'Playfair Display', serif;
+  color: var(--ink); background: var(--surface); outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.otp-box:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.2); background: #fffdf5; }
+.otp-box.filled { border-color: var(--gold); color: var(--gold); }
+.resend-row { text-align: center; margin-top: 14px; }
+.resend-timer { font-size: 13px; color: var(--ink-mute); }
+.resend-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--gold); font-size: 13px; font-weight: 600;
+  font-family: 'DM Sans', sans-serif; padding: 0; display: none;
+}
+.resend-btn:hover { text-decoration: underline; }
+.strength-bar-wrap { margin-top: 8px; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.strength-bar { height: 100%; width: 0; border-radius: 4px; transition: width 0.4s, background 0.4s; }
+.strength-label { font-size: 11px; color: var(--ink-mute); margin-top: 4px; height: 14px; }
+.fp-success { text-align: center; padding: 12px 0 8px; }
+.fp-success-icon {
+  width: 68px; height: 68px; border-radius: 50%;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn { from { transform:scale(0);opacity:0; } to { transform:scale(1);opacity:1; } }
+.fp-success-icon i { color: #fff; font-size: 30px; }
+.fp-success h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px; }
+.fp-success p  { font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 24px; }
+.fp-panel { display: none; animation: panelSlide 0.3s ease; }
+.fp-panel.active { display: block; }
+@keyframes panelSlide { from { opacity:0; transform:translateX(14px); } to { opacity:1; transform:translateX(0); } }
 
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 768px) {
@@ -561,6 +656,9 @@ body {
           <label>Password</label>
           <input type="password" id="siPassword" placeholder="Your password">
         </div>
+        <div style="text-align:right;margin-bottom:14px;margin-top:-4px;">
+          <button class="forgot-link" onclick="openForgot()">Forgot password?</button>
+        </div>
         <button class="btn-submit" onclick="signIn()">Sign In</button>
         <div class="or-divider">or continue with</div>
         <div id="g_id_onload"
@@ -600,7 +698,7 @@ body {
   </div>
 </div>
 
-<script src="js/navbar.js"></script>
+<script src="navbar.js"></script>
 <script>
 const API = "http://localhost:5165/api";
 
@@ -866,6 +964,346 @@ loadComments();
 document.getElementById("commentInput").addEventListener("keydown", function(e) {
   if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) postComment();
 });
+
+
+// ── Forgot Password ────────────────────────────────────────
+let fpStep = 1;
+let fpEmailVal = "";
+let fpResetToken = "";
+let resendInterval = null;
+
+function openForgot() {
+  document.getElementById("fpOverlay").classList.add("open");
+  fpGotoStep(1);
+}
+function closeForgot() {
+  document.getElementById("fpOverlay").classList.remove("open");
+  clearInterval(resendInterval);
+}
+function fpCloseOutside(e) {
+  if (e.target === document.getElementById("fpOverlay")) closeForgot();
+}
+
+function fpGotoStep(n) {
+  fpStep = n;
+  // Panels
+  [1,2,3,4].forEach(i => {
+    document.getElementById("fpPanel"+i).classList.toggle("active", i===n);
+  });
+  // Step indicators
+  [1,2,3].forEach(i => {
+    const el = document.getElementById("fpS"+i);
+    el.classList.remove("active","done");
+    if (i < n) el.classList.add("done");
+    else if (i === n) el.classList.add("active");
+  });
+  // Connectors
+  [1,2].forEach(i => {
+    document.getElementById("fpC"+i).classList.toggle("done", i < n);
+  });
+  // Hide step bar on success screen
+  document.getElementById("fpSteps").style.display = n === 4 ? "none" : "";
+
+  const titles = {
+    1: ["Reset Password",     "Enter your email to receive a 6-digit OTP"],
+    2: ["Check Your Email",   "Enter the 6-digit code we sent you"],
+    3: ["Set New Password",   "Choose a strong new password"],
+    4: ["All Done!",          ""]
+  };
+  document.getElementById("fpTitle").textContent = titles[n][0];
+  document.getElementById("fpSub").textContent   = titles[n][1];
+
+  // Clear messages
+  ["fpMsg1","fpMsg2","fpMsg3"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = ""; el.className = "msg-box"; }
+  });
+}
+
+function showFpMsg(id, text, type) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = "msg-box " + type;
+}
+
+// STEP 1 — Send OTP
+async function sendOtp() {
+  const email = document.getElementById("fpEmail").value.trim();
+  if (!email) { showFpMsg("fpMsg1","Please enter your email address.","error"); return; }
+
+  const btn = document.getElementById("fpSendBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sending...';
+
+  try {
+    const res  = await fetch(`${API}/auth/forgot-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (data.success) {
+      fpEmailVal = email;
+      document.getElementById("fpEmailDisplay").textContent = email;
+      fpGotoStep(2);
+      startResendTimer();
+      document.getElementById("otp0").focus();
+    } else {
+      showFpMsg("fpMsg1", data.message || "Email not found. Please check and try again.", "error");
+    }
+  } catch(e) {
+    showFpMsg("fpMsg1", "Cannot reach server. Is the API running?", "error");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa fa-paper-plane"></i> Send OTP to Email';
+  }
+}
+
+// STEP 2 — OTP input helpers
+function otpInput(i) {
+  const box = document.getElementById("otp"+i);
+  box.value = box.value.replace(/\D/g,"").slice(-1); // digits only
+  box.classList.toggle("filled", box.value !== "");
+  if (box.value && i < 5) document.getElementById("otp"+(i+1)).focus();
+  // Auto verify when all 6 filled
+  const code = [0,1,2,3,4,5].map(j => document.getElementById("otp"+j).value).join("");
+  if (code.length === 6) setTimeout(verifyOtp, 200);
+}
+function otpKey(e, i) {
+  if (e.key === "Backspace" && !document.getElementById("otp"+i).value && i > 0) {
+    document.getElementById("otp"+(i-1)).focus();
+  }
+  if (e.key === "Enter") verifyOtp();
+}
+
+// STEP 2 — Verify OTP
+async function verifyOtp() {
+  const code = [0,1,2,3,4,5].map(i => document.getElementById("otp"+i).value).join("");
+  if (code.length < 6) { showFpMsg("fpMsg2","Please enter all 6 digits.","error"); return; }
+
+  const btn = document.getElementById("fpVerifyBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Verifying...';
+
+  try {
+    const res  = await fetch(`${API}/auth/verify-otp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: fpEmailVal, otp: code })
+    });
+    const data = await res.json();
+    if (data.success) {
+      fpResetToken = data.resetToken || "";
+      clearInterval(resendInterval);
+      fpGotoStep(3);
+      document.getElementById("fpNewPwd").focus();
+    } else {
+      showFpMsg("fpMsg2", data.message || "Incorrect OTP. Please check and try again.", "error");
+      // Shake the OTP boxes
+      document.getElementById("otpRow").style.animation = "none";
+      setTimeout(() => { document.getElementById("otpRow").style.animation = ""; }, 10);
+    }
+  } catch(e) {
+    showFpMsg("fpMsg2","Cannot reach server. Is the API running?","error");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa fa-check-circle"></i> Verify OTP';
+  }
+}
+
+// Resend OTP timer
+function startResendTimer() {
+  let secs = 60;
+  document.getElementById("resendTimer").style.display = "";
+  document.getElementById("resendBtn").style.display   = "none";
+  document.getElementById("resendCount").textContent   = secs;
+  clearInterval(resendInterval);
+  resendInterval = setInterval(() => {
+    secs--;
+    document.getElementById("resendCount").textContent = secs;
+    if (secs <= 0) {
+      clearInterval(resendInterval);
+      document.getElementById("resendTimer").style.display = "none";
+      document.getElementById("resendBtn").style.display   = "inline";
+    }
+  }, 1000);
+}
+
+async function resendOtp() {
+  document.getElementById("resendBtn").style.display = "none";
+  document.getElementById("resendTimer").style.display = "";
+  showFpMsg("fpMsg2","","");
+  // Clear boxes
+  [0,1,2,3,4,5].forEach(i => {
+    const b = document.getElementById("otp"+i);
+    b.value = ""; b.classList.remove("filled");
+  });
+  document.getElementById("otp0").focus();
+  await sendOtpSilent();
+  startResendTimer();
+}
+
+async function sendOtpSilent() {
+  try {
+    await fetch(`${API}/auth/forgot-password`, {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ email: fpEmailVal })
+    });
+  } catch(e) {}
+}
+
+// STEP 3 — Password strength
+function checkStrength() {
+  const pwd = document.getElementById("fpNewPwd").value;
+  const bar = document.getElementById("strengthBar");
+  const lbl = document.getElementById("strengthLabel");
+  let score = 0;
+  if (pwd.length >= 6)  score++;
+  if (pwd.length >= 10) score++;
+  if (/[A-Z]/.test(pwd)) score++;
+  if (/[0-9]/.test(pwd)) score++;
+  if (/[^A-Za-z0-9]/.test(pwd)) score++;
+  const levels = [
+    { w:"0%",   bg:"",         t:"" },
+    { w:"25%",  bg:"#ef4444",  t:"Weak" },
+    { w:"50%",  bg:"#f97316",  t:"Fair" },
+    { w:"75%",  bg:"#eab308",  t:"Good" },
+    { w:"90%",  bg:"#22c55e",  t:"Strong" },
+    { w:"100%", bg:"#16a34a",  t:"Very Strong" },
+  ];
+  const l = levels[Math.min(score, 5)];
+  bar.style.width = l.w; bar.style.background = l.bg;
+  lbl.textContent = l.t; lbl.style.color = l.bg;
+}
+
+// STEP 3 — Reset Password
+async function resetPassword() {
+  const pwd  = document.getElementById("fpNewPwd").value;
+  const conf = document.getElementById("fpConfirmPwd").value;
+  if (pwd.length < 6)    { showFpMsg("fpMsg3","Password must be at least 6 characters.","error"); return; }
+  if (pwd !== conf)      { showFpMsg("fpMsg3","Passwords do not match.","error"); return; }
+
+  const btn = document.getElementById("fpResetBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Updating...';
+
+  try {
+    const res  = await fetch(`${API}/auth/reset-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: fpEmailVal, resetToken: fpResetToken, newPassword: pwd })
+    });
+    const data = await res.json();
+    if (data.success) {
+      fpGotoStep(4);
+    } else {
+      showFpMsg("fpMsg3", data.message || "Could not update password. Please try again.", "error");
+    }
+  } catch(e) {
+    showFpMsg("fpMsg3","Cannot reach server. Is the API running?","error");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa fa-lock"></i> Update Password';
+  }
+}
 </script>
+
+<!-- ── Forgot Password Modal ───────────────────────────────── -->
+<div class="fp-modal-overlay" id="fpOverlay" onclick="fpCloseOutside(event)">
+  <div class="fp-modal" id="fpModal">
+
+    <!-- Step bar -->
+    <div class="fp-steps" id="fpSteps">
+      <div class="fp-step active" id="fpS1"><div class="fp-step-num">1</div>Email</div>
+      <div class="fp-connector" id="fpC1"></div>
+      <div class="fp-step" id="fpS2"><div class="fp-step-num">2</div>OTP</div>
+      <div class="fp-connector" id="fpC2"></div>
+      <div class="fp-step" id="fpS3"><div class="fp-step-num">3</div>Password</div>
+    </div>
+
+    <!-- Header (changes per step) -->
+    <div class="fp-header">
+      <h2 id="fpTitle">Reset Password</h2>
+      <p  id="fpSub">Enter your email to receive a 6-digit OTP</p>
+      <button class="fp-close" onclick="closeForgot()"><i class="fa fa-times"></i></button>
+    </div>
+
+    <div class="fp-body">
+
+      <!-- STEP 1: Email -->
+      <div class="fp-panel active" id="fpPanel1">
+        <div class="msg-box" id="fpMsg1"></div>
+        <div class="field">
+          <label>Your Registered Email</label>
+          <input type="email" id="fpEmail" placeholder="you@example.com"
+                 onkeydown="if(event.key==='Enter') sendOtp()">
+        </div>
+        <button class="btn-submit" id="fpSendBtn" onclick="sendOtp()">
+          <i class="fa fa-paper-plane"></i> Send OTP to Email
+        </button>
+        <div style="text-align:center;margin-top:16px;">
+          <button class="forgot-link" onclick="closeForgot();openModal('signin')">
+            &larr; Back to Sign In
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: OTP -->
+      <div class="fp-panel" id="fpPanel2">
+        <div class="msg-box" id="fpMsg2"></div>
+        <p style="font-size:14px;color:var(--ink-soft);margin-bottom:20px;line-height:1.6;">
+          We sent a 6-digit code to <strong id="fpEmailDisplay"></strong>. Enter it below — it expires in <strong>10 minutes</strong>.
+        </p>
+        <div class="otp-row" id="otpRow">
+          <input class="otp-box" maxlength="1" id="otp0" oninput="otpInput(0)" onkeydown="otpKey(event,0)">
+          <input class="otp-box" maxlength="1" id="otp1" oninput="otpInput(1)" onkeydown="otpKey(event,1)">
+          <input class="otp-box" maxlength="1" id="otp2" oninput="otpInput(2)" onkeydown="otpKey(event,2)">
+          <input class="otp-box" maxlength="1" id="otp3" oninput="otpInput(3)" onkeydown="otpKey(event,3)">
+          <input class="otp-box" maxlength="1" id="otp4" oninput="otpInput(4)" onkeydown="otpKey(event,4)">
+          <input class="otp-box" maxlength="1" id="otp5" oninput="otpInput(5)" onkeydown="otpKey(event,5)">
+        </div>
+        <button class="btn-submit" id="fpVerifyBtn" onclick="verifyOtp()">
+          <i class="fa fa-check-circle"></i> Verify OTP
+        </button>
+        <div class="resend-row">
+          <span class="resend-timer" id="resendTimer">Resend in <strong id="resendCount">60</strong>s</span>
+          <button class="resend-btn" id="resendBtn" onclick="resendOtp()">Resend OTP</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: New Password -->
+      <div class="fp-panel" id="fpPanel3">
+        <div class="msg-box" id="fpMsg3"></div>
+        <div class="field">
+          <label>New Password</label>
+          <input type="password" id="fpNewPwd" placeholder="Min 6 characters" oninput="checkStrength()">
+          <div class="strength-bar-wrap"><div class="strength-bar" id="strengthBar"></div></div>
+          <div class="strength-label" id="strengthLabel"></div>
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <input type="password" id="fpConfirmPwd" placeholder="Repeat new password"
+                 onkeydown="if(event.key==='Enter') resetPassword()">
+        </div>
+        <button class="btn-submit" id="fpResetBtn" onclick="resetPassword()">
+          <i class="fa fa-lock"></i> Update Password
+        </button>
+      </div>
+
+      <!-- STEP 4: Success -->
+      <div class="fp-panel" id="fpPanel4">
+        <div class="fp-success">
+          <div class="fp-success-icon"><i class="fa fa-check"></i></div>
+          <h3>Password Updated!</h3>
+          <p>Your password has been reset successfully. You can now sign in with your new password.</p>
+          <button class="btn-submit" onclick="closeForgot();openModal('signin')">
+            <i class="fa fa-sign-in-alt"></i> Sign In Now
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 </body>
 </html>
