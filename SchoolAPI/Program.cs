@@ -67,9 +67,7 @@ catch (Exception ex)
 }
 
 // ── Middleware — order matters ────────────────────────────────────────────────
-app.UseCors("AllowFrontend");          // CORS first
-app.UseDefaultFiles();                 // serves index.html at /
-app.UseStaticFiles();                  // serves wwwroot/ — html, css, js, photo
+app.UseCors("AllowFrontend");          // CORS first                // serves wwwroot/ — html, css, js, photo
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthentication();
