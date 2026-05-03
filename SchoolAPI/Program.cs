@@ -66,12 +66,25 @@ catch (Exception ex)
     Console.WriteLine($"Database error: {ex.Message}");
 }
 
-// ── Middleware — order matters ────────────────────────────────────────────────
-app.UseCors("AllowFrontend");          // CORS first                // serves wwwroot/ — html, css, js, photo
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+    context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.StatusCode = 204;
+        return;
+    }
+    await next();
+});
+
+app.UseCors("AllowFrontend");
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();                  // API routes: /api/auth/..., /api/comments
-
-app.Run();
+app.MapControllers();
