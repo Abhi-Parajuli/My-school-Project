@@ -23,7 +23,7 @@ public class AppDbContext : DbContext
             entity.Property(u => u.Email).HasColumnName("email").HasMaxLength(150).IsRequired();
             entity.Property(u => u.Password).HasColumnName("password").HasMaxLength(255).IsRequired();
             entity.Property(u => u.IsVerified).HasColumnName("isVerified").HasDefaultValue(false); // NEW
-            entity.Property(u => u.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("GETDATE()");
+            entity.Property(u => u.CreatedAt).HasColumnName("created_at")..HasDefaultValueSql("NOW()");
             entity.HasIndex(u => u.Email).IsUnique();
         });
 
