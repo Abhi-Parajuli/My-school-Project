@@ -18,8 +18,8 @@ public class EmailService
 
     public async Task SendVerificationEmailAsync(string toEmail, string toName, string verifyUrl)
     {
-        var fromEmail   = _config["Email:From"]!;
-        var appPassword = _config["Email:AppPassword"]!;
+        var fromEmail   = _config["EMAIL_USER"]!;
+        var appPassword = _config["EMAIL_PASS"]!;
 
         var smtp = new SmtpClient("smtp.gmail.com")
         {
