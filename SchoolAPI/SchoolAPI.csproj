@@ -8,26 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- PostgreSQL via Entity Framework Core -->
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
-
-    <!-- JWT -->
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
-
-    <!-- Google OAuth -->
     <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
-
-    <!-- BCrypt password hashing -->
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-
-    <!-- Swagger UI -->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
-  <!-- Include all wwwroot files so dotnet publish copies them to output -->
-  <ItemGroup>
-    <Content Include="wwwroot\**\*" CopyToPublishDirectory="PreserveNewest" />
-  </ItemGroup>
+  <!-- DO NOT add Content Include for wwwroot here -->
+  <!-- The .NET Web SDK automatically includes wwwroot/** already -->
 
 </Project>
