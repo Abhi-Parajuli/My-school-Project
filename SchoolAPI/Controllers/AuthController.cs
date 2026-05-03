@@ -223,7 +223,7 @@ public class AuthController : ControllerBase
     <div class='icon'>{(success ? "✅" : "❌")}</div>
     <h1>{title}</h1>
     <p>{message}</p>
-    <a href='https://my-school-project-4.onrender.com/contact.html'>Go to Login</a>
+    <a href='https://hool-project-4.onrender.com/contact.html'>Go to Login</a>
   </div>
 </body></html>";
 
