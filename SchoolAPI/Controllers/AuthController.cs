@@ -29,9 +29,54 @@ public class AuthController : ControllerBase
         if (string.IsNullOrWhiteSpace(req.Email) || string.IsNullOrWhiteSpace(req.Password))
             return BadRequest(new AuthResponse { Success = false, Message = "Email and password are required." });
 
-        bool exists = await _db.Users.AnyAsync(u => u.Email == req.Email);
-        if (exists)
-            return BadRequest(new AuthResponse { Success = false, Message = "Email Address Already Exists!" });
+        var existingUser = await _db.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
+        if (existingUser != null)
+        {
+            // Already verified — tell them to log in instead
+            if (existingUser.IsVerified)
+                return BadRequest(new AuthResponse
+                {
+                    Success = false,
+                    Message = "An account with this email already exists. Please sign in."
+                });
+
+            // Exists but NOT verified — wipe old tokens and resend a fresh verification link
+            var oldTokens = _db.EmailVerifications.Where(e => e.UserId == existingUser.Id && !e.IsUsed);
+            _db.EmailVerifications.RemoveRange(oldTokens);
+
+            var freshToken = Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N");
+            _db.EmailVerifications.Add(new EmailVerification
+            {
+                UserId    = existingUser.Id,
+                Token     = freshToken,
+                ExpiresAt = DateTime.UtcNow.AddHours(24),
+                IsUsed    = false
+            });
+            await _db.SaveChangesAsync();
+
+            var resendApiUrl    = Environment.GetEnvironmentVariable("API_URL")
+                                  ?? "https://my-school-project-4.onrender.com";
+            var resendVerifyUrl = $"{resendApiUrl}/api/auth/verify?token={freshToken}";
+
+            try
+            {
+                await _emailService.SendVerificationEmailAsync(
+                    existingUser.Email,
+                    $"{existingUser.FirstName} {existingUser.LastName}",
+                    resendVerifyUrl
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Resend Verify Error] {ex.Message}");
+            }
+
+            return Ok(new AuthResponse
+            {
+                Success = true,
+                Message = $"Your account isn't verified yet. A new verification email has been sent to {existingUser.Email}. Please check your inbox."
+            });
+        }
 
         var user = new User
         {
