@@ -14,6 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
+// ── Static Files (serve HTML/CSS/JS/images) ───────────────────
+builder.WebHost.UseWebRoot("wwwroot");
+
 // ── Database ──────────────────────────────────────────────────
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 if (string.IsNullOrEmpty(connectionString))
@@ -61,14 +64,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// ── Reset and recreate DB tables with new column names ────────
+// ── Migrate DB safely (no EnsureDeleted in production!) ───────
 try
 {
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureDeleted();  // ← drops old tables with wrong column names
-    db.Database.EnsureCreated(); // ← recreates with correct lowercase names
-    Console.WriteLine("✅ Database reset and tables ready");
+    // EnsureCreated only creates tables if they don't exist — safe for production
+    db.Database.EnsureCreated();
+    Console.WriteLine("✅ Database tables ready");
 }
 catch (Exception ex)
 {
@@ -78,6 +81,11 @@ catch (Exception ex)
 app.UseCors("AllowFrontend");
 app.UseSwagger();
 app.UseSwaggerUI();
+
+// ── Serve static frontend files ───────────────────────────────
+app.UseDefaultFiles();   // serves index.html for "/"
+app.UseStaticFiles();    // serves css/, js/, photo/
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
