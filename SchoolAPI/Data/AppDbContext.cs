@@ -6,7 +6,7 @@ namespace SchoolAPI.Data;
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
+    public DbSet<OtpVerification> OtpVerifications { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<EmailVerification> EmailVerifications { get; set; }
@@ -40,16 +40,17 @@ public class AppDbContext : DbContext
             entity.Property(c => c.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
         });
 
-        modelBuilder.Entity<EmailVerification>(entity =>
-        {
-            entity.ToTable("email_verifications");
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.UserId).HasColumnName("userid");
-            entity.Property(e => e.Token).HasColumnName("token").HasMaxLength(200).IsRequired();
-            entity.Property(e => e.ExpiresAt).HasColumnName("expiresat");
-            entity.Property(e => e.IsUsed).HasColumnName("isused").HasDefaultValue(false);
-            entity.HasOne(e => e.User).WithMany().HasForeignKey(e => e.UserId);
-        });
+        modelBuilder.Entity<OtpVerification>(entity =>
+{
+    entity.ToTable("otp_verifications");
+    entity.HasKey(o => o.Id);
+    entity.Property(o => o.Id).HasColumnName("id");
+    entity.Property(o => o.Email).HasColumnName("email").HasMaxLength(150).IsRequired();
+    entity.Property(o => o.Otp).HasColumnName("otp").HasMaxLength(6).IsRequired();
+    entity.Property(o => o.ResetToken).HasColumnName("resettoken").HasMaxLength(200);
+    entity.Property(o => o.ExpiresAt).HasColumnName("expiresat");
+    entity.Property(o => o.IsUsed).HasColumnName("isused").HasDefaultValue(false);
+    entity.Property(o => o.CreatedAt).HasColumnName("created_at").HasDefaultValueSql("NOW()");
+});
     }
 }
