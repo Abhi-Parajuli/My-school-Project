@@ -10,19 +10,24 @@ Environment.SetEnvironmentVariable("DOTNET_GCHeapHardLimit", "400000000");
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Port: always read from Render's PORT env var ──────────────────────────────
+// ── Port ──────────────────────────────────────────────────────
 var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
-Console.WriteLine($"Starting on port {port}");
 
-// ── Database ──────────────────────────────────────────────────────────────────
+// ── Database ──────────────────────────────────────────────────
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+if (string.IsNullOrEmpty(connectionString))
+    throw new Exception("❌ CONNECTION_STRING is not set!");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString)
 );
 
-// ── JWT ───────────────────────────────────────────────────────────────────────
-var jwtKey = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "fallback-dev-key-change-in-production";
+// ── JWT ───────────────────────────────────────────────────────
+var jwtKey = Environment.GetEnvironmentVariable("JWT_SECRET");
+if (string.IsNullOrEmpty(jwtKey))
+    throw new Exception("❌ JWT_SECRET is not set!");
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -32,16 +37,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience         = false,
             ValidateLifetime         = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey         = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+            IssuerSigningKey         = new SymmetricSecurityKey(
+                                           Encoding.UTF8.GetBytes(jwtKey))
         };
     });
 
-// ── CORS ──────────────────────────────────────────────────────────────────────
+// ── CORS ──────────────────────────────────────────────────────
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
@@ -53,43 +61,27 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// ── Auto-create DB tables ─────────────────────────────────────────────────────
+// ── Reset and recreate DB tables with new column names ────────
 try
 {
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated();
-    Console.WriteLine("Database connected and tables ready");
+    db.Database.EnsureDeleted();  // ← drops old tables with wrong column names
+    db.Database.EnsureCreated(); // ← recreates with correct lowercase names
+    Console.WriteLine("✅ Database reset and tables ready");
 }
 catch (Exception ex)
 {
-    Console.WriteLine($"Database error: {ex.Message}");
+    Console.WriteLine($"❌ Database error: {ex.Message}");
 }
 
-app.Use(async (context, next) =>
-{
-    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-    context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    
-    if (context.Request.Method == "OPTIONS")
-    {
-        context.Response.StatusCode = 204;
-        return;
-    }
-    await next();
-});
-
 app.UseCors("AllowFrontend");
-app.UseDefaultFiles();
-app.UseStaticFiles();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapControllers();
 
-Console.WriteLine("🚀 App running!");
+Console.WriteLine($"🚀 App running on port {port}");
 
-app.Run(); // ← THIS IS MISSING - add it here
+app.Run();
