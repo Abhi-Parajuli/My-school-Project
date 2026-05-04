@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         modelBuilder.Entity<User>(entity =>
         {
             entity.ToTable("users");

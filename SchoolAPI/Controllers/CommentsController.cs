@@ -41,15 +41,14 @@ public class CommentsController : ControllerBase
             return BadRequest(new { error = "UserName and CommentText are required." });
         }
 
-        var comment = new Comment
-        {
-            UserName    = req.UserName,
-            UserEmail   = req.UserEmail,
-            UserImage   = req.UserImage,
-            CommentText = req.CommentText,
-            CreatedAt   = DateTime.Now
-        };
-
+      var comment = new Comment
+            {
+                UserName    = req.UserName,
+                UserEmail   = req.UserEmail,
+                UserImage   = req.UserImage,
+                CommentText = req.CommentText,
+                CreatedAt   = DateTime.UtcNow  // ← change from DateTime.Now
+            };
         _db.Comments.Add(comment);
         await _db.SaveChangesAsync();
 
