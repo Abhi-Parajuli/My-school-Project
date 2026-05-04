@@ -543,7 +543,7 @@ body {
         <div class="info-icon"><i class="fa fa-phone"></i></div>
         <div class="info-content">
           <h4>Phone</h4>
-          <a href="tel:+977000000000">+977 000-000-000</a>
+          <a href="tel:+977000000000">+977 9709495701</a>
         </div>
       </div>
 
@@ -787,7 +787,7 @@ async function signIn() {
   try {
     const res  = await fetch(`${API}/auth/signin`, {
       method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ Email: email, Password: password })
     });
     const data = await res.json();
     if (data.success) {
@@ -821,7 +821,7 @@ async function signUp() {
   try {
     const res  = await fetch(`${API}/auth/register`, {
       method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ fName, lName, email, password })
+      body: JSON.stringify({ FName: fName, LName: lName, Email: email, Password: password })
     });
     const data = await res.json();
     if (data.success) {
@@ -934,7 +934,7 @@ async function loadComments() {
 
     document.getElementById("commentsList").innerHTML = data.map(c => {
       const initials = c.userName.split(" ").map(n=>n[0]).join("").toUpperCase().slice(0,2);
-      const time     = c.created_at ? timeAgo(new Date(c.created_at)) : "";
+      const time     = c.createdAt ? timeAgo(new Date(c.createdAt)) : "";
       return `
         <div class="comment-item">
           <div class="comment-avatar">
