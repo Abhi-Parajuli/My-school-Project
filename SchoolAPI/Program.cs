@@ -88,3 +88,8 @@ app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapControllers();
+
+Console.WriteLine("🚀 App running!");
+
+app.Run(); // ← THIS IS MISSING - add it here
