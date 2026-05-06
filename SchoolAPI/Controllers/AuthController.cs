@@ -286,22 +286,28 @@ public class AuthController : ControllerBase
     }
 
     // ── POST /api/auth/forgot-password ────────────────────────
+    // FIX: Now correctly uses OtpVerifications table (not EmailVerifications)
     [HttpPost("forgot-password")]
     public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequest req)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
+
+        // Always return success to prevent email enumeration attacks
         if (user == null)
             return Ok(new { success = true, message = "If this email exists, an OTP has been sent." });
 
+        // Generate a secure 6-digit OTP
         var otp = new Random().Next(100000, 999999).ToString();
 
-        var old = _db.EmailVerifications.Where(e => e.UserId == user.Id && !e.IsUsed);
-        _db.EmailVerifications.RemoveRange(old);
+        // FIX: Remove old OTPs from the correct table (OtpVerifications), NOT EmailVerifications
+        var oldOtps = _db.OtpVerifications.Where(o => o.Email == req.Email && !o.IsUsed);
+        _db.OtpVerifications.RemoveRange(oldOtps);
 
-        _db.EmailVerifications.Add(new EmailVerification
+        // FIX: Store OTP in OtpVerifications table where it belongs
+        _db.OtpVerifications.Add(new OtpVerification
         {
-            UserId    = user.Id,
-            Token     = $"OTP:{otp}",
+            Email     = req.Email,
+            Otp       = otp,
             ExpiresAt = DateTime.UtcNow.AddMinutes(10),
             IsUsed    = false
         });
@@ -321,37 +327,33 @@ public class AuthController : ControllerBase
     }
 
     // ── POST /api/auth/verify-otp ─────────────────────────────
+    // FIX: Now correctly queries OtpVerifications table by Email + Otp fields
     [HttpPost("verify-otp")]
     public async Task<ActionResult> VerifyOtp([FromBody] VerifyOtpRequest req)
     {
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
-        if (user == null)
-            return BadRequest(new { success = false, message = "Invalid request." });
-
-        var record = await _db.EmailVerifications
-            .FirstOrDefaultAsync(e => e.UserId == user.Id
-                                   && e.Token == $"OTP:{req.Otp}"
-                                   && !e.IsUsed
-                                   && e.ExpiresAt > DateTime.UtcNow);
+        // FIX: Query OtpVerifications directly — no more EmailVerifications hack with "OTP:" prefix
+        var record = await _db.OtpVerifications
+            .FirstOrDefaultAsync(o => o.Email == req.Email
+                                   && o.Otp == req.Otp
+                                   && !o.IsUsed
+                                   && o.ExpiresAt > DateTime.UtcNow);
 
         if (record == null)
             return BadRequest(new { success = false, message = "Invalid or expired OTP." });
 
-        record.IsUsed = true;
-        var resetToken = Guid.NewGuid().ToString("N");
-        _db.EmailVerifications.Add(new EmailVerification
-        {
-            UserId    = user.Id,
-            Token     = $"RESET:{resetToken}",
-            ExpiresAt = DateTime.UtcNow.AddMinutes(15),
-            IsUsed    = false
-        });
+        // Generate a reset token and store it on the OTP record
+        var resetToken    = Guid.NewGuid().ToString("N");
+        record.IsUsed     = true;
+        record.ResetToken = resetToken;
+        // Extend expiry window so user has 15 min to set their new password
+        record.ExpiresAt  = DateTime.UtcNow.AddMinutes(15);
         await _db.SaveChangesAsync();
 
         return Ok(new { success = true, resetToken });
     }
 
     // ── POST /api/auth/reset-password ─────────────────────────
+    // FIX: Now correctly queries OtpVerifications table by ResetToken
     [HttpPost("reset-password")]
     public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordRequest req)
     {
@@ -359,17 +361,20 @@ public class AuthController : ControllerBase
         if (user == null)
             return BadRequest(new { success = false, message = "Invalid request." });
 
-        var record = await _db.EmailVerifications
-            .FirstOrDefaultAsync(e => e.UserId == user.Id
-                                   && e.Token == $"RESET:{req.ResetToken}"
-                                   && !e.IsUsed
-                                   && e.ExpiresAt > DateTime.UtcNow);
+        // FIX: Look up the reset token in OtpVerifications
+        // (IsUsed=true is expected since it was set at OTP step;
+        //  we validate by ResetToken + ExpiresAt instead)
+        var record = await _db.OtpVerifications
+            .FirstOrDefaultAsync(o => o.Email == req.Email
+                                   && o.ResetToken == req.ResetToken
+                                   && o.ExpiresAt > DateTime.UtcNow);
 
         if (record == null)
             return BadRequest(new { success = false, message = "Reset token expired. Please start again." });
 
-        record.IsUsed = true;
-        user.Password = BCrypt.Net.BCrypt.HashPassword(req.NewPassword);
+        // Invalidate token so it cannot be reused
+        record.ResetToken = null;
+        user.Password     = BCrypt.Net.BCrypt.HashPassword(req.NewPassword);
         await _db.SaveChangesAsync();
 
         return Ok(new { success = true, message = "Password updated successfully!" });

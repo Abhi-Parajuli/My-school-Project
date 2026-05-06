@@ -18,10 +18,12 @@ public class EmailService
         if (string.IsNullOrEmpty(appPassword))
             throw new InvalidOperationException("EMAIL_PASSWORD is not set.");
 
-        // Port 465 + SSL=true works on Render (port 587 is often blocked)
+        // FIX: Use port 587 + STARTTLS instead of port 465 (implicit SSL).
+        // Port 465 with SmtpClient is unreliable in .NET and often blocked on cloud hosts.
+        // Port 587 with EnableSsl=true triggers STARTTLS which works correctly everywhere.
         return new SmtpClient("smtp.gmail.com")
         {
-            Port                  = 465,
+            Port                  = 587,
             Credentials           = new NetworkCredential(fromEmail, appPassword),
             EnableSsl             = true,
             DeliveryMethod        = SmtpDeliveryMethod.Network,
