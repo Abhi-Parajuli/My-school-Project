@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json;
 
 namespace SchoolAPI.Services;
@@ -6,16 +7,16 @@ public class EmailService
 {
     private readonly HttpClient _http;
 
-    // Elastic Email free tier: 100 emails/day, no SMTP needed
-    // API docs: https://elasticemail.com/developers/api-documentation
-    private const string ApiEndpoint = "https://api.elasticemail.com/v2/email/send";
+    // Elastic Email v4 API — required for accounts created after 2022
+    // v2 is deprecated for new accounts and returns "APIKey Expired" even with valid keys
+    private const string ApiEndpoint = "https://api.elasticemail.com/v4/emails/transactional";
 
     public EmailService()
     {
         _http = new HttpClient();
     }
 
-    // ── Core send method (Elastic Email v2 form-encoded API) ──
+    // ── Core send method (Elastic Email v4 JSON API) ──────────
     private async Task SendAsync(string toEmail, string toName, string subject, string htmlBody)
     {
         var apiKey    = Environment.GetEnvironmentVariable("ELASTIC_EMAIL_API_KEY")
@@ -25,29 +26,39 @@ public class EmailService
         var fromName  = Environment.GetEnvironmentVariable("EMAIL_FROM_NAME")
                         ?? "Bhanudaya Secondary School";
 
-        // Elastic Email v2 uses application/x-www-form-urlencoded
-        var fields = new Dictionary<string, string>
+        // v4 uses JSON body + X-ElasticEmail-ApiKey header
+        _http.DefaultRequestHeaders.Remove("X-ElasticEmail-ApiKey");
+        _http.DefaultRequestHeaders.Add("X-ElasticEmail-ApiKey", apiKey);
+
+        var payload = new
         {
-            ["apikey"]          = apiKey,
-            ["from"]            = fromEmail,
-            ["fromName"]        = fromName,
-            ["to"]              = $"{toName} <{toEmail}>",
-            ["subject"]         = subject,
-            ["bodyHtml"]        = htmlBody,
-            ["isTransactional"] = "true"  // bypasses unsubscribe list — required for auth emails
+            Recipients = new
+            {
+                To = new[] { $"{toName} <{toEmail}>" }
+            },
+            Content = new
+            {
+                From    = $"{fromName} <{fromEmail}>",
+                ReplyTo = fromEmail,
+                Subject = subject,
+                Body = new[]
+                {
+                    new { ContentType = "HTML", Content = htmlBody }
+                }
+            }
         };
 
-        using var content  = new FormUrlEncodedContent(fields);
+        var json    = JsonSerializer.Serialize(payload);
+        using var content  = new StringContent(json, Encoding.UTF8, "application/json");
         using var response = await _http.PostAsync(ApiEndpoint, content);
-        var body = await response.Content.ReadAsStringAsync();
+        var responseBody   = await response.Content.ReadAsStringAsync();
 
-        // Elastic Email returns JSON: { "success": true } or { "success": false, "error": "..." }
-        using var doc = JsonDocument.Parse(body);
-        var success = doc.RootElement.GetProperty("success").GetBoolean();
-        if (!success)
+        Console.WriteLine($"[Elastic Email v4] Status: {response.StatusCode}");
+        Console.WriteLine($"[Elastic Email v4] Body: {responseBody}");
+
+        if (!response.IsSuccessStatusCode)
         {
-            var error = doc.RootElement.TryGetProperty("error", out var e) ? e.GetString() : "Unknown error";
-            throw new Exception($"Elastic Email API error: {error}");
+            throw new Exception($"Elastic Email v4 error ({response.StatusCode}): {responseBody}");
         }
     }
 
@@ -107,10 +118,7 @@ public class EmailService
       <p>Hello <strong>{toName}</strong>,</p>
       <p>Your 6-digit OTP code for password reset is:</p>
       <div class='otp'>{otp}</div>
-      <p class='warning'>
-        Expires in <strong>10 minutes</strong>.<br>
-        Do not share it with anyone.
-      </p>
+      <p class='warning'>Expires in <strong>10 minutes</strong>.<br>Do not share it with anyone.</p>
     </div>
     <div class='footer'>© Bhanudaya Secondary School · Built by Abhi Parajuli</div>
   </div>
